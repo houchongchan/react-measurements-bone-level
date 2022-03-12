@@ -21,22 +21,20 @@ export default class MeasurementLayer extends PureComponent {
             mode={this.state.mode}
             onCommit={this.onCommit}
           />
-          <MeasurementButtons
-            mode={this.state.mode}
-            onClick={this.toggleMode}
-          />
         </div>
       )
     );
   }
 
-  toggleMode = mode =>
-    this.setState({ mode: mode === this.state.mode ? null : mode });
+  add = () => {
+    this.setState({ mode: "line" });
+  }
+
+  disable = () => {
+    this.setState({ mode: null });
+  }
 
   onCommit = measurement => {
     this.setState({ mode: null });
-    if (this.props.onCommit) {
-      this.props.onCommit(measurement);
-    }
   };
 }
