@@ -271,7 +271,7 @@ var MeasurementLayerBase = function (_PureComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = MeasurementLayerBase.__proto__ || Object.getPrototypeOf(MeasurementLayerBase)).call.apply(_ref, [this].concat(args))), _this), _this.createdId = null, _this.createMeasurementComponent = function (measurement) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = MeasurementLayerBase.__proto__ || Object.getPrototypeOf(MeasurementLayerBase)).call.apply(_ref, [this].concat(args))), _this), _this.createdId = null, _this.enabled = true, _this.createMeasurementComponent = function (measurement) {
       if (measurement.type === "line") {
         return _react2.default.createElement(_LineMeasurement2.default, {
           key: measurement.id,
@@ -281,7 +281,8 @@ var MeasurementLayerBase = function (_PureComponent) {
           measureLine: _this.props.measureLine,
           onChange: _this.onChange,
           onCommit: _this.props.onCommit,
-          onDeleteButtonClick: _this.delete
+          onDeleteButtonClick: _this.delete,
+          onMidMouse: _this.onMidMouse
         });
       } else if (measurement.type === "circle") {
         return _react2.default.createElement(_CircleMeasurement2.default, {
@@ -309,8 +310,8 @@ var MeasurementLayerBase = function (_PureComponent) {
       }
     }, _this.onMouseDown = function (event) {
       _this.finishAnyTextEdit();
-      if (event.button === 0) {
-        if (_this.props.mode === "line") {
+      if (event.button === 0 && _this.enabled) {
+        if (_this.props.mode === "line" || _this.props.mode === null) {
           event.preventDefault();
           _this.lineCreationInProgress = true;
           _this.mouseXAtPress = event.clientX;
@@ -321,6 +322,12 @@ var MeasurementLayerBase = function (_PureComponent) {
           _this.mouseXAtPress = event.clientX;
           _this.mouseYAtPress = event.clientY;
         }
+      }
+    }, _this.onMidMouse = function (state) {
+      if (state == "enter") {
+        _this.enabled = false;
+      } else {
+        _this.enabled = true;
       }
     }, _this.onMouseMove = function (event) {
       if (_this.lineCreationInProgress) {
@@ -475,6 +482,10 @@ var MeasurementLayerBase = function (_PureComponent) {
       document.addEventListener("mousemove", this.onMouseMove);
       window.addEventListener("mouseup", this.onMouseUp);
       window.addEventListener("blur", this.endDrag);
+
+      if (this.props.event) {
+        this.onMouseDown(event);
+      }
     }
   }, {
     key: "componentWillUnmount",
@@ -1019,8 +1030,13 @@ var MeasurementLayer = function (_PureComponent) {
       _this.setState({ mode: "line" });
     }, _this.disable = function () {
       _this.setState({ mode: null });
+    }, _this.start = function (event) {
+      _this.setState({ event: event });
     }, _this.onCommit = function (measurement) {
       _this.setState({ mode: null });
+      if (_this.props.onCommit) {
+        _this.props.onCommit(measurement);
+      }
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -1043,7 +1059,8 @@ var MeasurementLayer = function (_PureComponent) {
           measureLine: this.props.measureLine,
           measureCircle: this.props.measureCircle,
           mode: this.state.mode,
-          onCommit: this.onCommit
+          onCommit: this.onCommit,
+          onMidMouse: this.props.onMidMouse
         })
       );
     }
@@ -1639,9 +1656,11 @@ var LineMeasurement = function (_PureComponent) {
     }, _this.didValuesChange = function () {
       return _this.props.line.startX !== _this.lineAtPress.startX || _this.props.line.startY !== _this.lineAtPress.startY || _this.props.line.endX !== _this.lineAtPress.endX || _this.props.line.endY !== _this.lineAtPress.endY;
     }, _this.onMidMouseEnter = function (event) {
-      return _this.setState(_extends({}, _this.state, { midHover: true }));
+      _this.props.onMidMouse("enter");
+      _this.setState(_extends({}, _this.state, { midHover: true }));
     }, _this.onMidMouseLeave = function (event) {
-      return _this.setState(_extends({}, _this.state, { midHover: false }));
+      _this.props.onMidMouse("leave");
+      _this.setState(_extends({}, _this.state, { midHover: false }));
     }, _this.getAnnotationLayerClassList = function () {
       return _this.root.parentElement.classList;
     }, _this.clamp = function (value) {

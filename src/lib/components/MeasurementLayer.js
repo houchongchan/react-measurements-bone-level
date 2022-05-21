@@ -20,6 +20,7 @@ export default class MeasurementLayer extends PureComponent {
             measureCircle={this.props.measureCircle}
             mode={this.state.mode}
             onCommit={this.onCommit}
+            onMidMouse={this.props.onMidMouse}
           />
         </div>
       )
@@ -34,7 +35,14 @@ export default class MeasurementLayer extends PureComponent {
     this.setState({ mode: null });
   }
 
+  start = (event) => {
+    this.setState({ event });
+  }
+
   onCommit = measurement => {
     this.setState({ mode: null });
+    if (this.props.onCommit) {
+      this.props.onCommit(measurement);
+    }
   };
 }

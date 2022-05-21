@@ -261,9 +261,15 @@ export default class LineMeasurement extends PureComponent {
     this.props.line.endX !== this.lineAtPress.endX ||
     this.props.line.endY !== this.lineAtPress.endY;
 
-  onMidMouseEnter = event => this.setState({ ...this.state, midHover: true });
+  onMidMouseEnter = event => {
+    this.props.onMidMouse("enter");
+    this.setState({ ...this.state, midHover: true });
+  }
 
-  onMidMouseLeave = event => this.setState({ ...this.state, midHover: false });
+  onMidMouseLeave = event => {
+    this.props.onMidMouse("leave");
+    this.setState({ ...this.state, midHover: false });
+  }
 
   getAnnotationLayerClassList = () => this.root.parentElement.classList;
 

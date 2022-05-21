@@ -7,6 +7,7 @@ import "./MeasurementLayerBase.css";
 
 export default class MeasurementLayerBase extends PureComponent {
   createdId = null;
+  enabled = true;
 
   componentDidMount() {
     this.root.addEventListener("mousedown", this.onMouseDown);
@@ -14,6 +15,10 @@ export default class MeasurementLayerBase extends PureComponent {
     document.addEventListener("mousemove", this.onMouseMove);
     window.addEventListener("mouseup", this.onMouseUp);
     window.addEventListener("blur", this.endDrag);
+
+    if (this.props.event) {
+      this.onMouseDown(event)
+    }
   }
 
   componentWillUnmount() {
@@ -46,6 +51,7 @@ export default class MeasurementLayerBase extends PureComponent {
           onChange={this.onChange}
           onCommit={this.props.onCommit}
           onDeleteButtonClick={this.delete}
+          onMidMouse={this.onMidMouse}
         />
       );
     } else if (measurement.type === "circle") {
@@ -80,8 +86,8 @@ export default class MeasurementLayerBase extends PureComponent {
 
   onMouseDown = event => {
     this.finishAnyTextEdit();
-    if (event.button === 0) {
-      if (this.props.mode === "line") {
+    if (event.button === 0 && this.enabled) {
+      if (this.props.mode === "line" || this.props.mode === null) {
         event.preventDefault();
         this.lineCreationInProgress = true;
         this.mouseXAtPress = event.clientX;
@@ -94,6 +100,14 @@ export default class MeasurementLayerBase extends PureComponent {
       }
     }
   };
+
+  onMidMouse = state => {
+    if (state == "enter") {
+      this.enabled = false;
+    } else {
+      this.enabled = true;
+    }
+  }
 
   onMouseMove = event => {
     if (this.lineCreationInProgress) {
