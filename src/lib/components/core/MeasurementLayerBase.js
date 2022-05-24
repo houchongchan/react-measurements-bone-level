@@ -8,6 +8,7 @@ import "./MeasurementLayerBase.css";
 export default class MeasurementLayerBase extends PureComponent {
   createdId = null;
   enabled = true;
+  doubleClicked = [];
 
   componentDidMount() {
     this.root.addEventListener("mousedown", this.onMouseDown);
@@ -15,6 +16,7 @@ export default class MeasurementLayerBase extends PureComponent {
     document.addEventListener("mousemove", this.onMouseMove);
     window.addEventListener("mouseup", this.onMouseUp);
     window.addEventListener("blur", this.endDrag);
+    window.addEventListener("keydown", this.keydown);
 
     if (this.props.event) {
       this.onMouseDown(event)
@@ -27,11 +29,18 @@ export default class MeasurementLayerBase extends PureComponent {
     document.removeEventListener("mousemove", this.onMouseMove);
     window.removeEventListener("mouseup", this.onMouseUp);
     window.removeEventListener("blur", this.endDrag);
+    window.removeEventListener("keydown", this.keydown);
   }
 
   render() {
     const className =
       "measurement-layer-base" + (this.props.mode ? " any-mode-on" : "");
+
+    if (this.props.disabled) {
+      this.doubleClicked = [];
+      this.enabled = true;
+    }
+
     return (
       <div className={className} ref={e => (this.root = e)}>
         {this.props.measurements.map(this.createMeasurementComponent)}
@@ -43,11 +52,13 @@ export default class MeasurementLayerBase extends PureComponent {
     if (measurement.type === "line") {
       return (
         <LineMeasurement
+          doubleClicked={this.doubleClicked}
           key={measurement.id}
           line={measurement}
           parentWidth={this.props.widthInPx}
           parentHeight={this.props.widthInPx}
           measureLine={this.props.measureLine}
+          onDoubleClick={this.onDoubleClick}
           onChange={this.onChange}
           onCommit={this.props.onCommit}
           onDeleteButtonClick={this.delete}
@@ -84,7 +95,30 @@ export default class MeasurementLayerBase extends PureComponent {
     }
   };
 
+  keydown = (e) => {
+    // delete key
+    if (e.keyCode == 8) {
+      this.props.onChange(this.props.measurements.filter(n => {
+        return !this.doubleClicked.includes(n.id)
+      }))
+      this.doubleClicked = [];
+      this.enabled = true;
+    }
+  }
+
+  onDoubleClick = (enable, m) => {
+    if (enable) {
+      this.doubleClicked.push(m.id)
+    } else {
+      this.doubleClicked = this.doubleClicked.filter(n => n !== m.id);
+    }
+  }
+
   onMouseDown = event => {
+    if (this.doubleClicked.length > 0) {
+      return;
+    }
+
     this.finishAnyTextEdit();
     if (event.button === 0 && this.enabled) {
       if (this.props.mode === "line" || this.props.mode === null) {
@@ -102,6 +136,9 @@ export default class MeasurementLayerBase extends PureComponent {
   };
 
   onMidMouse = state => {
+    if (this.doubleClicked.length > 0) {
+      return;
+    }
     if (state == "enter") {
       this.enabled = false;
     } else {
@@ -110,6 +147,9 @@ export default class MeasurementLayerBase extends PureComponent {
   }
 
   onMouseMove = event => {
+    if (this.doubleClicked.length > 0) {
+      return;
+    }
     if (this.lineCreationInProgress) {
       const rect = this.root.getBoundingClientRect();
       const endX = this.clamp(
@@ -224,6 +264,9 @@ export default class MeasurementLayerBase extends PureComponent {
   };
 
   onClick = event => {
+    if (this.doubleClicked.length > 0) {
+      return;
+    }
     if (this.props.mode === "text") {
       const id = this.getNextId();
       const rect = this.root.getBoundingClientRect();
@@ -253,10 +296,14 @@ export default class MeasurementLayerBase extends PureComponent {
       ? Math.max(...this.props.measurements.map(a => a.id)) + 1
       : 0;
 
-  onChange = m =>
+  onChange = m => {
+    if (this.doubleClicked.length > 0) {
+      return;
+    }
     this.props.onChange(
       this.props.measurements.map(n => (m.id === n.id ? m : n))
     );
+  }
 
   delete = m => {
     this.props.onChange(this.props.measurements.filter(n => n.id !== m.id));

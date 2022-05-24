@@ -27,6 +27,12 @@
   stroke: yellow;
 }
 
+.line-measurement .double-click {
+  color: red;
+  stroke: red;
+  stroke-width: 5px;
+}
+
 .text-annotation .arrow-head {
   fill: yellow;
 }
@@ -219,7 +225,7 @@
 .measurement-layer-base.line-mid-dragged,
 .measurement-layer-base.circle-fill-dragged,
 .measurement-layer-base.arrow-line-dragged {
-  cursor: move;
+  cursor: pointer;
 }
 
 .line-measurement .start-grabber,

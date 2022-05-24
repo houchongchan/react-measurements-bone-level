@@ -12,6 +12,7 @@ export default class MeasurementLayer extends PureComponent {
       hasSize && (
         <div className="measurement-layer" ref={e => (this.root = e)}>
           <MeasurementLayerBase
+            disabled={this.state.disabled}
             measurements={this.props.measurements}
             onChange={this.props.onChange}
             widthInPx={this.props.widthInPx}
@@ -32,7 +33,11 @@ export default class MeasurementLayer extends PureComponent {
   }
 
   disable = () => {
-    this.setState({ mode: null });
+    this.setState({ mode: null, disabled: true });
+  }
+
+  enable = () => {
+    this.setState({ mode: null, disabled: false });
   }
 
   start = (event) => {
