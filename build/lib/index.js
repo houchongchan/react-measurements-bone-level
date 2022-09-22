@@ -1889,7 +1889,7 @@ var LineMeasurement = function (_PureComponent) {
               className: "line start-line" + handlerClassName,
               cx: startX,
               cy: startY,
-              r: Math.abs(edgeX),
+              r: 4,
               ref: function ref(e) {
                 return _this2.startLine = e;
               }
@@ -1912,7 +1912,7 @@ var LineMeasurement = function (_PureComponent) {
               className: "line end-line" + handlerClassName,
               cx: endX,
               cy: endY,
-              r: Math.abs(edgeX),
+              r: 4,
               ref: function ref(e) {
                 return _this2.endLine = e;
               }
