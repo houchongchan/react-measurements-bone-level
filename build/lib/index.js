@@ -1817,8 +1817,8 @@ var LineMeasurement = function (_PureComponent) {
       var deltaX = endX - startX;
       var deltaY = endY - startY;
       var rotate = Math.atan2(deltaY, deltaX);
-      var edgeX = edgeLength * Math.sin(rotate) / 2.0;
-      var edgeY = edgeLength * Math.cos(rotate) / 2.0;
+      var edgeX = edgeLength * Math.sin(rotate) / 3.0;
+      var edgeY = edgeLength * Math.cos(rotate) / 3.0;
 
       if (this.state.doubleClick && this.props.doubleClicked.length == 0) {
         this.state.doubleClick = false;
@@ -1885,12 +1885,11 @@ var LineMeasurement = function (_PureComponent) {
                 return _this2.startGrabber = e;
               }
             }),
-            _react2.default.createElement("line", {
+            _react2.default.createElement("circle", {
               className: "line start-line" + handlerClassName,
-              x1: startX - edgeX,
-              y1: startY + edgeY,
-              x2: startX + edgeX,
-              y2: startY - edgeY,
+              cx: startX,
+              cy: startY,
+              r: Math.abs(edgeX),
               ref: function ref(e) {
                 return _this2.startLine = e;
               }
@@ -1909,12 +1908,11 @@ var LineMeasurement = function (_PureComponent) {
                 return _this2.endGrabber = e;
               }
             }),
-            _react2.default.createElement("line", {
+            _react2.default.createElement("circle", {
               className: "line end-line" + handlerClassName,
-              x1: endX - edgeX,
-              y1: endY + edgeY,
-              x2: endX + edgeX,
-              y2: endY - edgeY,
+              cx: endX,
+              cy: endY,
+              r: Math.abs(edgeX),
               ref: function ref(e) {
                 return _this2.endLine = e;
               }
