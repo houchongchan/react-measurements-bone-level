@@ -1812,11 +1812,7 @@ var LineMeasurement = function (_PureComponent) {
       var endX = this.props.line.endX * this.props.parentWidth;
       var endY = this.props.line.endY * this.props.parentHeight;
       var deltaX = endX - startX;
-
       var deltaY = endY - startY;
-      // console.log(Math.sqrt(Math.pow(deltaY,2) + Math.pow(deltaX, 2)));
-      var length = Math.sqrt(Math.pow(deltaY, 2) + Math.pow(deltaX, 2));
-
       var rotate = Math.atan2(deltaY, deltaX);
       var edgeX = edgeLength * Math.sin(rotate) / 3.0;
       var edgeY = edgeLength * Math.cos(rotate) / 3.0;
@@ -1841,8 +1837,8 @@ var LineMeasurement = function (_PureComponent) {
       var handlerClassName = this.state.doubleClick ? " double-click" : "";
       var grabberClassName = this.state.doubleClick ? " double-click" : " mid-grabber";
       var colorStyle = {
-        fill: length > 85 ? "#F93D3D" : length > 50 ? "#FF7B43" : "#FFF500",
-        stroke: length > 85 ? "#F93D3D" : length > 50 ? "#FF7B43" : "#FFF500"
+        fill: Number(text) > 3 ? "#F93D3D" : Number(text) > 2 ? "#FF7B43" : "#FFF500",
+        stroke: Number(text) > 3 ? "#F93D3D" : Number(text) > 2 ? "#FF7B43" : "#FFF500"
       };
 
       return _react2.default.createElement(
