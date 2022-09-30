@@ -81,7 +81,7 @@ module.exports = require("react");
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -101,113 +101,110 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var TextAnchor = function (_PureComponent) {
-  _inherits(TextAnchor, _PureComponent);
+	_inherits(TextAnchor, _PureComponent);
 
-  function TextAnchor() {
-    var _ref;
+	function TextAnchor() {
+		var _ref;
 
-    var _temp, _this, _ret;
+		var _temp, _this, _ret;
 
-    _classCallCheck(this, TextAnchor);
+		_classCallCheck(this, TextAnchor);
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+			args[_key] = arguments[_key];
+		}
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TextAnchor.__proto__ || Object.getPrototypeOf(TextAnchor)).call.apply(_ref, [this].concat(args))), _this), _this.state = { buttonShowing: false, justCreated: true }, _this.onClick = function () {
-      return _this.setState(_extends({}, _this.state, { buttonShowing: true }));
-    }, _this.onDocumentMouseDown = function (e) {
-      if (!_this.textBox.contains(e.target)) {
-        _this.setState(_extends({}, _this.state, { buttonShowing: false }));
-      }
-    }, _this.onDocumentKeyDown = function (e) {
-      if (e.key === "Escape" || e.keyCode === 27) {
-        _this.setState(_extends({}, _this.state, { buttonShowing: false }));
-      }
-    }, _this.onDeleteButtonClick = function (event) {
-      if (event.button === 0) {
-        event.preventDefault();
-        event.stopPropagation();
-        _this.props.onDeleteButtonClick();
-      }
-    }, _temp), _possibleConstructorReturn(_this, _ret);
-  }
+		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TextAnchor.__proto__ || Object.getPrototypeOf(TextAnchor)).call.apply(_ref, [this].concat(args))), _this), _this.state = { buttonShowing: false, justCreated: true }, _this.onClick = function () {
+			return _this.setState(_extends({}, _this.state, { buttonShowing: true }));
+		}, _this.onDocumentMouseDown = function (e) {
+			if (!_this.textBox.contains(e.target)) {
+				_this.setState(_extends({}, _this.state, { buttonShowing: false }));
+			}
+		}, _this.onDocumentKeyDown = function (e) {
+			if (e.key === "Escape" || e.keyCode === 27) {
+				_this.setState(_extends({}, _this.state, { buttonShowing: false }));
+			}
+		}, _this.onDeleteButtonClick = function (event) {
+			if (event.button === 0) {
+				event.preventDefault();
+				event.stopPropagation();
+				_this.props.onDeleteButtonClick();
+			}
+		}, _temp), _possibleConstructorReturn(_this, _ret);
+	}
 
-  _createClass(TextAnchor, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var _this2 = this;
+	_createClass(TextAnchor, [{
+		key: "componentDidMount",
+		value: function componentDidMount() {
+			var _this2 = this;
 
-      this.mounted = true;
-      this.textBox.addEventListener("click", this.onClick);
-      document.addEventListener("mousedown", this.onDocumentMouseDown);
-      document.addEventListener("keydown", this.onDocumentKeyDown);
+			this.mounted = true;
+			this.textBox.addEventListener("click", this.onClick);
+			document.addEventListener("mousedown", this.onDocumentMouseDown);
+			document.addEventListener("keydown", this.onDocumentKeyDown);
 
-      setTimeout(function () {
-        if (_this2.mounted) {
-          _this2.setState(_extends({}, _this2.state, { justCreated: false }));
-        }
-      }, 200);
-    }
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      this.mounted = false;
-      this.textBox.removeEventListener("click", this.onClick);
-      document.removeEventListener("mousedown", this.onDocumentMouseDown);
-      document.removeEventListener("keydown", this.onDocumentKeyDown);
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this3 = this;
+			setTimeout(function () {
+				if (_this2.mounted) {
+					_this2.setState(_extends({}, _this2.state, { justCreated: false }));
+				}
+			}, 200);
+		}
+	}, {
+		key: "componentWillUnmount",
+		value: function componentWillUnmount() {
+			this.mounted = false;
+			this.textBox.removeEventListener("click", this.onClick);
+			document.removeEventListener("mousedown", this.onDocumentMouseDown);
+			document.removeEventListener("keydown", this.onDocumentKeyDown);
+		}
+	}, {
+		key: "render",
+		value: function render() {
+			var _this3 = this;
 
-      var textAnchorStyle = {
-        left: this.props.x + "px",
-        top: this.props.y + "px"
-      };
-      if (this.props.rotate) {
-        textAnchorStyle.transform = "rotate(" + this.props.rotate + "rad)";
-      }
+			var textAnchorStyle = {
+				left: this.props.x + "px",
+				top: this.props.y + "px"
+			};
 
-      var className = "text-anchor" + (this.state.buttonShowing ? " button-showing" : "") + (this.state.justCreated ? " just-created" : "");
+			var className = "text-anchor" + (this.state.buttonShowing ? " button-showing" : "") + (this.state.justCreated ? " just-created" : "");
 
-      return _react2.default.createElement(
-        "div",
-        { className: className, style: textAnchorStyle },
-        _react2.default.createElement(
-          "div",
-          { className: "text-box", ref: function ref(e) {
-              return _this3.textBox = e;
-            } },
-          this.props.children,
-          _react2.default.createElement(
-            "button",
-            {
-              type: "button",
-              className: "delete-button",
-              onClick: this.onDeleteButtonClick
-              // Additional mouse-down handler means delete works cleanly if text is being edited:
-              , onMouseDown: this.onDeleteButtonClick,
-              ref: function ref(e) {
-                return _this3.deleteButton = e;
-              }
-            },
-            _react2.default.createElement(
-              "svg",
-              { className: "delete-button-svg" },
-              _react2.default.createElement("path", {
-                className: "delete-button-icon",
-                d: "M 4 4 L 11 11 M 11 4 L 4 11"
-              })
-            )
-          )
-        )
-      );
-    }
-  }]);
+			return _react2.default.createElement(
+				"div",
+				{ className: className, style: textAnchorStyle },
+				_react2.default.createElement(
+					"div",
+					{ className: "text-box", ref: function ref(e) {
+							return _this3.textBox = e;
+						} },
+					this.props.children,
+					_react2.default.createElement(
+						"button",
+						{
+							type: "button",
+							className: "delete-button",
+							onClick: this.onDeleteButtonClick
+							// Additional mouse-down handler means delete works cleanly if text is being edited:
+							, onMouseDown: this.onDeleteButtonClick,
+							ref: function ref(e) {
+								return _this3.deleteButton = e;
+							}
+						},
+						_react2.default.createElement(
+							"svg",
+							{ className: "delete-button-svg" },
+							_react2.default.createElement("path", {
+								className: "delete-button-icon",
+								d: "M 4 4 L 11 11 M 11 4 L 4 11"
+							})
+						)
+					)
+				)
+			);
+		}
+	}]);
 
-  return TextAnchor;
+	return TextAnchor;
 }(_react.PureComponent);
 
 exports.default = TextAnchor;
@@ -1815,7 +1812,11 @@ var LineMeasurement = function (_PureComponent) {
       var endX = this.props.line.endX * this.props.parentWidth;
       var endY = this.props.line.endY * this.props.parentHeight;
       var deltaX = endX - startX;
+
       var deltaY = endY - startY;
+      // console.log(Math.sqrt(Math.pow(deltaY,2) + Math.pow(deltaX, 2)));
+      var length = Math.sqrt(Math.pow(deltaY, 2) + Math.pow(deltaX, 2));
+
       var rotate = Math.atan2(deltaY, deltaX);
       var edgeX = edgeLength * Math.sin(rotate) / 3.0;
       var edgeY = edgeLength * Math.cos(rotate) / 3.0;
@@ -1839,6 +1840,10 @@ var LineMeasurement = function (_PureComponent) {
       var lineClassName = this.state.doubleClick ? " double-click" : " line";
       var handlerClassName = this.state.doubleClick ? " double-click" : "";
       var grabberClassName = this.state.doubleClick ? " double-click" : " mid-grabber";
+      var colorStyle = {
+        fill: length > 85 ? "#F93D3D" : length > 50 ? "#FF7B43" : "#FFF500",
+        stroke: length > 85 ? "#F93D3D" : length > 50 ? "#FF7B43" : "#FFF500"
+      };
 
       return _react2.default.createElement(
         "div",
@@ -1863,6 +1868,7 @@ var LineMeasurement = function (_PureComponent) {
             }),
             _react2.default.createElement("line", {
               className: "mid-line" + lineClassName,
+              style: colorStyle,
               x1: startX,
               y1: startY,
               x2: endX,
@@ -1887,6 +1893,7 @@ var LineMeasurement = function (_PureComponent) {
             }),
             _react2.default.createElement("circle", {
               className: "line start-line" + handlerClassName,
+              style: colorStyle,
               cx: startX,
               cy: startY,
               r: 4,
@@ -1910,6 +1917,7 @@ var LineMeasurement = function (_PureComponent) {
             }),
             _react2.default.createElement("circle", {
               className: "line end-line" + handlerClassName,
+              style: colorStyle,
               cx: endX,
               cy: endY,
               r: 4,

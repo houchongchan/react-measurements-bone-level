@@ -47,10 +47,14 @@ export default class LineMeasurement extends PureComponent {
     const endX = this.props.line.endX * this.props.parentWidth;
     const endY = this.props.line.endY * this.props.parentHeight;
     const deltaX = endX - startX;
+
     const deltaY = endY - startY;
+    // console.log(Math.sqrt(Math.pow(deltaY,2) + Math.pow(deltaX, 2)));
+    const length= Math.sqrt(Math.pow(deltaY,2) + Math.pow(deltaX, 2));
+
     const rotate = Math.atan2(deltaY, deltaX);
-    const edgeX = edgeLength * Math.sin(rotate) / 2.0;
-    const edgeY = edgeLength * Math.cos(rotate) / 2.0;
+    const edgeX = edgeLength * Math.sin(rotate) / 3.0;
+    const edgeY = edgeLength * Math.cos(rotate) / 3.0;
 
     if (this.state.doubleClick && this.props.doubleClicked.length == 0) {
       this.state.doubleClick = false;
@@ -71,9 +75,13 @@ export default class LineMeasurement extends PureComponent {
     const lineClassName =  this.state.doubleClick ? " double-click" : " line";
     const handlerClassName = this.state.doubleClick ? " double-click" : "";
     const grabberClassName = this.state.doubleClick ? " double-click" : " mid-grabber";
+    const colorStyle = {
+      fill: length > 85?"#F93D3D":length > 50?"#FF7B43":"#FFF500",
+      stroke: length > 85?"#F93D3D":length > 50?"#FF7B43":"#FFF500",
+    }
 
     return (
-      <div className={rootClassName} ref={e => (this.root = e)}>
+      <div className={rootClassName}  ref={e => (this.root = e)}>
         <svg className="measurement-svg">
           <g className="grabber-group">
             <line
@@ -86,6 +94,7 @@ export default class LineMeasurement extends PureComponent {
             />
             <line
               className={"mid-line" + lineClassName}
+              style = {colorStyle}
               x1={startX}
               y1={startY}
               x2={endX}
@@ -102,12 +111,12 @@ export default class LineMeasurement extends PureComponent {
               y2={startY - edgeY}
               ref={e => (this.startGrabber = e)}
             />
-            <line
+            <circle
               className={"line start-line" + handlerClassName}
-              x1={startX - edgeX}
-              y1={startY + edgeY}
-              x2={startX + edgeX}
-              y2={startY - edgeY}
+              style = {colorStyle}
+              cx= {startX}
+              cy= {startY}
+              r= {4}
               ref={e => (this.startLine = e)}
             />
           </g>
@@ -120,12 +129,12 @@ export default class LineMeasurement extends PureComponent {
               y2={endY - edgeY}
               ref={e => (this.endGrabber = e)}
             />
-            <line
+            <circle
               className={"line end-line" + handlerClassName}
-              x1={endX - edgeX}
-              y1={endY + edgeY}
-              x2={endX + edgeX}
-              y2={endY - edgeY}
+              style = {colorStyle}
+              cx= {endX}
+              cy= {endY}
+              r= {4}
               ref={e => (this.endLine = e)}
             />
           </g>

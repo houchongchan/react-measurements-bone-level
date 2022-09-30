@@ -56,7 +56,7 @@ export default class MeasurementLayerBase extends PureComponent {
           key={measurement.id}
           line={measurement}
           parentWidth={this.props.widthInPx}
-          parentHeight={this.props.widthInPx}
+          parentHeight={this.props.heightInPx}
           measureLine={this.props.measureLine}
           onDoubleClick={this.onDoubleClick}
           onChange={this.onChange}
@@ -71,7 +71,7 @@ export default class MeasurementLayerBase extends PureComponent {
           key={measurement.id}
           circle={measurement}
           parentWidth={this.props.widthInPx}
-          parentHeight={this.props.widthInPx}
+          parentHeight={this.props.heightInPx}
           measureCircle={this.props.measureCircle}
           onChange={this.onChange}
           onCommit={this.props.onCommit}
@@ -84,7 +84,7 @@ export default class MeasurementLayerBase extends PureComponent {
           key={measurement.id}
           text={measurement}
           parentWidth={this.props.widthInPx}
-          parentHeight={this.props.widthInPx}
+          parentHeight={this.props.heightInPx}
           onChange={this.onChange}
           onCommit={this.props.onCommit}
           onDeleteButtonClick={this.delete}
