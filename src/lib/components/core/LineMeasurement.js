@@ -47,11 +47,7 @@ export default class LineMeasurement extends PureComponent {
     const endX = this.props.line.endX * this.props.parentWidth;
     const endY = this.props.line.endY * this.props.parentHeight;
     const deltaX = endX - startX;
-
     const deltaY = endY - startY;
-    // console.log(Math.sqrt(Math.pow(deltaY,2) + Math.pow(deltaX, 2)));
-    const length= Math.sqrt(Math.pow(deltaY,2) + Math.pow(deltaX, 2));
-
     const rotate = Math.atan2(deltaY, deltaX);
     const edgeX = edgeLength * Math.sin(rotate) / 3.0;
     const edgeY = edgeLength * Math.cos(rotate) / 3.0;
@@ -76,8 +72,8 @@ export default class LineMeasurement extends PureComponent {
     const handlerClassName = this.state.doubleClick ? " double-click" : "";
     const grabberClassName = this.state.doubleClick ? " double-click" : " mid-grabber";
     const colorStyle = {
-      fill: length > 85?"#F93D3D":length > 50?"#FF7B43":"#FFF500",
-      stroke: length > 85?"#F93D3D":length > 50?"#FF7B43":"#FFF500",
+			fill: Number(text) > 3 ? "#F93D3D" : Number(text) > 2 ? "#FF7B43" : "#FFF500",
+			stroke: Number(text) > 3 ? "#F93D3D" : Number(text) > 2 ? "#FF7B43" : "#FFF500",
     }
 
     return (
