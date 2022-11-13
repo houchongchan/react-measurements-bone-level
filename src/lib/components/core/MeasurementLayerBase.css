@@ -60,6 +60,12 @@
   stroke: yellow;
 }
 
+.measurement-layer-base .text-anchor.button-showing .delete-button-icon-2,
+.measurement-layer-base .text-annotation.editable .delete-button-icon-2,
+.measurement-layer-base .text-anchor .delete-button:focus .delete-button-icon-2 {
+  stroke: #CEDAE3;
+}
+
 /*---------- General Measurement & Text Styling ----------*/
 
 .line-measurement .line,
@@ -198,6 +204,14 @@
   height: 15px;
 }
 
+.measurement-layer-base .delete-button-svg-2 {
+  align-items: center;
+  display:flex;
+  justify-content: end;
+  height: 15px;
+  width: 15px;
+}
+
 .measurement-layer-base.any-dragged .delete-button-svg,
 .measurement-layer-base.any-mode-on .delete-button-svg {
   background-color: transparent;
@@ -212,8 +226,16 @@
   transition: stroke 0.2s;
 }
 
+.measurement-layer-base .delete-button-icon-2 {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 1px;
+  stroke-linecap: square;
+}
+
 .measurement-layer-base.any-dragged .delete-button-icon,
-.measurement-layer-base.any-mode-on .delete-button-icon {
+.measurement-layer-base.any-mode-on .delete-button-icon, 
+.measurement-layer-base.any-mode-on .delete-button-icon-2 {
   stroke: transparent;
 }
 
