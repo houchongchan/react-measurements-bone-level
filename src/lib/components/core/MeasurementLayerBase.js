@@ -187,7 +187,7 @@ export default class MeasurementLayerBase extends PureComponent {
 					endX,
 					endY,
 					label: 0,
-					number: 21,
+					number: "00",
 				};
 				this.root.classList.add("line-end-dragged");
 				this.props.onChange([...this.props.measurements, line]);
