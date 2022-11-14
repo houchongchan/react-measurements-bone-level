@@ -382,7 +382,7 @@ var MeasurementLayerBase = function (_PureComponent) {
 						endX: endX,
 						endY: endY,
 						label: 0,
-						number: 21
+						number: "00"
 					};
 					_this.root.classList.add("line-end-dragged");
 					_this.props.onChange([].concat(_toConsumableArray(_this.props.measurements), [line]));
