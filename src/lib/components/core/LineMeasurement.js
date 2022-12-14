@@ -161,14 +161,9 @@ export default class LineMeasurement extends PureComponent {
 						y={textY}
 						rotate={textRotate}
 						onDeleteButtonClick={this.onDeleteButtonClick}
-					>
-						<div
-							className={"measurement-text" + handlerClassName}
-							ref={(e) => (this.text = e)}
-						>
-							{text}
-						</div>
-					</TextAnchor>
+						handlerClassName={handlerClassName}
+						text={text}
+					/>
 				)}
 			</div>
 		);
@@ -283,16 +278,7 @@ export default class LineMeasurement extends PureComponent {
 		}
 	};
 
-	onDoubleClick = (event) => {
-		if (this.state.doubleClick) {
-			this.setState({ ...this.state, doubleClick: false, midHover: false });
-			this.props.onDoubleClick(false, this.props.line);
-		} else {
-			this.setState({ ...this.state, doubleClick: true, midHover: false });
-			this.getAnnotationLayerClassList().toggle("double-click");
-			this.props.onDoubleClick(true, this.props.line);
-		}
-	};
+	onDoubleClick = (event) => {};
 
 	getXAfterDrag = (xAtPress, clientX) =>
 		(xAtPress + clientX - this.mouseXAtPress) / this.props.parentWidth;

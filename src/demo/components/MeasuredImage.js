@@ -52,7 +52,7 @@ export default class MeasuredImage extends PureComponent {
 
 	onChange = (measurements) => this.setState({ ...this.state, measurements });
 
-	measureLine = (line) => Math.round(calculateDistance(line, 300, 300)) + " μm";
+	measureLine = (line) => calculateDistance(line, 300, 300).toFixed(1);
 
 	measureCircle = (circle) =>
 		Math.round(calculateArea(circle, 300, 300) / 10) * 10 + " μm²";

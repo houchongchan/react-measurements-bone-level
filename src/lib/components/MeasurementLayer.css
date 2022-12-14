@@ -75,6 +75,14 @@
   border: 1px solid transparent;
 }
 
+.number-display {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid black;
+  border-radius: 12.5px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  padding: 4px 8px;
+}
+
 .measurement-number-type:active, .measurement-number-type:hover {
   border: 1px solid #33FFE2;
   border-top-right-radius: 0px;
@@ -82,7 +90,7 @@
   border-right: none;
 }
 
-.measurement-input {
+.measurement-input, .measurement-input-2 {
   background: transparent;
   border: none;
   color: white;
@@ -93,7 +101,14 @@
   width: 15px;
 }
 
-.measurement-input:focus {
+.measurement-input-2 {
+  display: block;
+  padding-left: 0px;
+  padding-right: 0px;
+  width: 100%;
+}
+
+.measurement-input:focus, .measurement-input-2:focus {
   outline: none;
 }
 

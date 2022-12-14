@@ -1,13 +1,15 @@
 import React, { PureComponent } from "react";
 
-export default class TextAnchor extends PureComponent {
-	state = { buttonShowing: false, justCreated: true };
+export default class InputAnchor extends PureComponent {
+	state = { buttonShowing: false, justCreated: true, value: this.props.number };
 
 	componentDidMount() {
 		this.mounted = true;
-		this.textBox.addEventListener("click", this.onClick);
+		this.textBox.addEventListener("mouseover", this.onClick);
+		this.textBox.addEventListener("mouseleave", this.onLeave);
 		document.addEventListener("mousedown", this.onDocumentMouseDown);
 		document.addEventListener("keydown", this.onDocumentKeyDown);
+		this.handleChange = this.handleChange.bind(this);
 
 		setTimeout(() => {
 			if (this.mounted) {
@@ -18,40 +20,61 @@ export default class TextAnchor extends PureComponent {
 
 	componentWillUnmount() {
 		this.mounted = false;
-		this.textBox.removeEventListener("click", this.onClick);
+		this.textBox.removeEventListener("mouseover", this.onClick);
+		this.textBox.removeEventListener("mouseleave", this.onLeave);
 		document.removeEventListener("mousedown", this.onDocumentMouseDown);
 		document.removeEventListener("keydown", this.onDocumentKeyDown);
 	}
 
+	handleChange(event) {
+		if (event.target.value.length + 1 > 3 || isNaN(event.target.value)) {
+			return;
+		}
+		this.setState({ ...this.state, value: event.target.value });
+		this.onNumberChange(Number(event.target.value));
+	}
+
 	render() {
+		const handlerClassName = this.props.handlerClassName;
 		const textAnchorStyle = {
 			left: this.props.x + "px",
 			top: this.props.y + "px",
 		};
-
 		const className =
 			"text-anchor" +
-			(this.state.buttonShowing ? " button-showing" : "") +
+			(this.state.buttonShowing ? " button-showing " : "") +
 			(this.state.justCreated ? " just-created" : "");
+
+		const deleteClassName = this.state.buttonShowing
+			? " delete-button-2 "
+			: "delete-hide";
 
 		return (
 			<div className={className} style={textAnchorStyle}>
-				<div className="text-box" ref={(e) => (this.textBox = e)}>
-					{this.props.children}
+				<div className={"text-box"} ref={(e) => (this.textBox = e)}>
 					<button
-						type="button"
-						className="delete-button"
-						onClick={this.onDeleteButtonClick}
-						// Additional mouse-down handler means delete works cleanly if text is being edited:
-						onMouseDown={this.onDeleteButtonClick}
-						ref={(e) => (this.deleteButton = e)}
+						className={
+							"measurement-number-type number-display" + handlerClassName
+						}
+						ref={(e) => (this.text = e)}
 					>
-						<svg className="delete-button-svg">
-							<path
-								className="delete-button-icon"
-								d="M 4 4 L 11 11 M 11 4 L 4 11"
-							/>
-						</svg>
+						<div className={"measurement-input-2" + handlerClassName}>
+							{this.props.text}
+						</div>
+						<div
+							className={deleteClassName}
+							onClick={this.onDeleteButtonClick}
+							// Additional mouse-down handler means delete works cleanly if text is being edited:
+							onMouseDown={this.onDeleteButtonClick}
+							ref={(e) => (this.deleteButton = e)}
+						>
+							<svg className="delete-button-svg-2">
+								<path
+									className="delete-button-icon-2"
+									d="M 4 4 L 11 11 M 11 4 L 4 11"
+								/>
+							</svg>
+						</div>
 					</button>
 				</div>
 			</div>
@@ -59,6 +82,7 @@ export default class TextAnchor extends PureComponent {
 	}
 
 	onClick = () => this.setState({ ...this.state, buttonShowing: true });
+	onLeave = () => this.setState({ ...this.state, buttonShowing: false });
 
 	onDocumentMouseDown = (e) => {
 		if (!this.textBox.contains(e.target)) {

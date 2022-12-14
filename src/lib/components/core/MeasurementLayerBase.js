@@ -87,15 +87,16 @@ export default class MeasurementLayerBase extends PureComponent {
 			);
 		} else if (measurement.type === "text") {
 			return (
-				<TextAnnotation
-					key={measurement.id}
-					text={measurement}
-					parentWidth={this.props.widthInPx}
-					parentHeight={this.props.heightInPx}
-					onChange={this.onChange}
-					onCommit={this.props.onCommit}
-					onDeleteButtonClick={this.delete}
-				/>
+				<div></div>
+				// <TextAnnotation
+				// 	key={measurement.id}
+				// 	text={measurement}
+				// 	parentWidth={this.props.widthInPx}
+				// 	parentHeight={this.props.heightInPx}
+				// 	onChange={this.onChange}
+				// 	onCommit={this.props.onCommit}
+				// 	onDeleteButtonClick={this.delete}
+				// />
 			);
 		} else {
 			return false;
@@ -116,11 +117,11 @@ export default class MeasurementLayerBase extends PureComponent {
 	};
 
 	onDoubleClick = (enable, m) => {
-		if (enable) {
-			this.doubleClicked.push(m.id);
-		} else {
-			this.doubleClicked = this.doubleClicked.filter((n) => n !== m.id);
-		}
+		// if (enable) {
+		// 	this.doubleClicked.push(m.id);
+		// } else {
+		// 	this.doubleClicked = this.doubleClicked.filter((n) => n !== m.id);
+		// }
 	};
 
 	onMouseDown = (event) => {
@@ -164,39 +165,7 @@ export default class MeasurementLayerBase extends PureComponent {
 			return;
 		}
 		if (this.lineCreationInProgress) {
-			const rect = this.root.getBoundingClientRect();
-			const endX = this.clamp(
-				(event.clientX - rect.left) / this.props.widthInPx
-			);
-			const endY = this.clamp(
-				(event.clientY - rect.top) / this.props.heightInPx
-			);
-			if (this.createdId === null) {
-				this.createdId = this.getNextId();
-				const startX = this.clamp(
-					(this.mouseXAtPress - rect.left) / this.props.widthInPx
-				);
-				const startY = this.clamp(
-					(this.mouseYAtPress - rect.top) / this.props.heightInPx
-				);
-				const line = {
-					id: this.createdId,
-					type: "line",
-					startX,
-					startY,
-					endX,
-					endY,
-					label: 0,
-					number: "00",
-				};
-				this.root.classList.add("line-end-dragged");
-				this.props.onChange([...this.props.measurements, line]);
-			} else {
-				const line = this.props.measurements.filter(
-					(a) => a.id === this.createdId
-				)[0];
-				this.onChange({ ...line, endX, endY });
-			}
+			return;
 		} else if (this.circleCreationInProgress) {
 			const rect = this.root.getBoundingClientRect();
 			const cursorX = event.clientX - rect.left;
