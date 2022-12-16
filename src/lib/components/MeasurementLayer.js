@@ -1,6 +1,5 @@
 import React, { PureComponent } from "react";
 import MeasurementLayerBase from "./core/MeasurementLayerBase";
-import MeasurementButtons from "./buttons/MeasurementButtons";
 import "./MeasurementLayer.css";
 
 export default class MeasurementLayer extends PureComponent {

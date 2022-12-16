@@ -144,10 +144,12 @@ export default class LineMeasurement extends PureComponent {
 					<InputAnchor
 						x={textX}
 						y={textY}
+						active={this.props.line.active}
 						rotate={textRotate}
 						onLabelClick={this.onLabelClick}
 						onNumberChange={this.onNumberChange}
 						onDeleteButtonClick={this.onDeleteButtonClick}
+						enableInput={this.props.enableInput}
 						handlerClassName={handlerClassName}
 						label={this.props.line.label}
 						number={this.props.line.number}
@@ -174,8 +176,10 @@ export default class LineMeasurement extends PureComponent {
 			return;
 		}
 		if (event.button === 0) {
+			this.props.onSelected(this.props.line);
 			this.startDragInProgress = true;
 			event.preventDefault();
+			this.setState({ ...this.state, enableInput: false });
 			this.onDragBegin(event.clientX, event.clientY);
 		}
 	};
@@ -204,6 +208,7 @@ export default class LineMeasurement extends PureComponent {
 
 	onDragBegin = (eventX, eventY) => {
 		// This function disables inputs
+		this.props.onSelected(this.props.line);
 		this.mouseXAtPress = eventX;
 		this.mouseYAtPress = eventY;
 		this.lineAtPress = this.props.line;

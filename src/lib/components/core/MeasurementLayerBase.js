@@ -1,7 +1,6 @@
 import React, { PureComponent } from "react";
 import LineMeasurement from "./LineMeasurement";
 import CircleMeasurement, { minRadiusInPx } from "./CircleMeasurement";
-import TextAnnotation from "./TextAnnotation";
 import { EditorState } from "draft-js";
 import "./MeasurementLayerBase.css";
 
@@ -9,7 +8,7 @@ export default class MeasurementLayerBase extends PureComponent {
 	createdId = null;
 	enabled = true;
 	doubleClicked = [];
-	state = { onInput: false };
+	state = { onInput: false, enableInput: true };
 
 	componentDidMount() {
 		this.root.addEventListener("mousedown", this.onMouseDown);
@@ -55,6 +54,7 @@ export default class MeasurementLayerBase extends PureComponent {
 				<LineMeasurement
 					anchor={this.props.anchor}
 					doubleClicked={this.doubleClicked}
+					enableInput={this.state.enableInput}
 					key={measurement.id}
 					line={measurement}
 					parentWidth={this.props.widthInPx}
@@ -70,6 +70,7 @@ export default class MeasurementLayerBase extends PureComponent {
 					onInput={this.state.onInput}
 					onInputClick={this.onInputClick}
 					onInputBlur={this.onInputBlur}
+					onSelected={this.onSelected}
 				/>
 			);
 		} else if (measurement.type === "circle") {
@@ -126,6 +127,7 @@ export default class MeasurementLayerBase extends PureComponent {
 
 	onMouseDown = (event) => {
 		// This function disables inputs
+		this.setState({ ...this.state, enableInput: false });
 		if (this.state.onInput) {
 			return;
 		}
@@ -304,6 +306,14 @@ export default class MeasurementLayerBase extends PureComponent {
 		);
 	};
 
+	onSelected = (m) => {
+		this.props.onChange(
+			this.props.measurements.map((n) =>
+				m.id === n.id ? { ...m, active: true } : { ...n, active: false }
+			)
+		);
+	};
+
 	onNumberChange = (m, value) => {
 		this.props.onChange(
 			this.props.measurements.map((n) =>
@@ -334,7 +344,7 @@ export default class MeasurementLayerBase extends PureComponent {
 	});
 
 	onInputClick = () => {
-		this.setState({ ...this.state, onInput: true });
+		this.setState({ ...this.state, onInput: true, enableInput: true });
 	};
 
 	onInputBlur = () => {

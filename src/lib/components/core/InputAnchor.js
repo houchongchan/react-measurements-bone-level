@@ -35,7 +35,8 @@ export default class InputAnchor extends PureComponent {
 	}
 
 	render() {
-		const handlerClassName = this.props.handlerClassName;
+		const handlerClassName =
+			this.props.handlerClassName + (this.props.active ? " selected" : "");
 		const textAnchorStyle = {
 			left: this.props.x + "px",
 			top: this.props.y + "px",
@@ -48,7 +49,7 @@ export default class InputAnchor extends PureComponent {
 		const deleteClassName = this.state.buttonShowing
 			? " delete-button-2 "
 			: "delete-hide";
-
+		const labelColor = this.props.label ? " mesial" : "";
 		return (
 			<div className={className} style={textAnchorStyle}>
 				<div className={"text-box"} ref={(e) => (this.textBox = e)}>
@@ -66,9 +67,10 @@ export default class InputAnchor extends PureComponent {
 							type="text"
 							value={this.state.value}
 							onChange={this.handleChange}
+							disabled={!this.props.enableInput}
 						/>
 						<div
-							className={"type" + handlerClassName}
+							className={"type" + labelColor}
 							ref={(e) => (this.text = e)}
 							onClick={this.onLabelClick}
 						>

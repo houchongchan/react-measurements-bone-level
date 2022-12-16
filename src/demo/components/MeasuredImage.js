@@ -81,24 +81,18 @@ export default class MeasuredImage extends PureComponent {
 			endY: 0.224,
 			label: 0,
 			number: 21,
+			active: true,
 		},
 		{
 			id: 1,
-			type: "circle",
-			centerX: 0.863,
-			centerY: 0.414,
-			radius: 0.0255,
-		},
-		{
-			id: 2,
-			type: "text",
-			arrowX: 0.482,
-			arrowY: 0.739,
-			textX: 0.54,
-			textY: 0.82,
-			editorState: EditorState.createWithContent(
-				ContentState.createFromText("Pollen Grain")
-			),
+			type: "line",
+			startX: 0.5,
+			startY: 0.33,
+			endX: 0.316,
+			endY: 0.224,
+			label: 0,
+			number: 21,
+			active: false,
 		},
 	];
 }
