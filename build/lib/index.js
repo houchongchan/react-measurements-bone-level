@@ -64,7 +64,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 14);
+/******/ 	return __webpack_require__(__webpack_require__.s = 10);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -75,6 +75,357 @@ module.exports = require("react");
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _LineMeasurement = __webpack_require__(9);
+
+var _LineMeasurement2 = _interopRequireDefault(_LineMeasurement);
+
+var _CircleMeasurement = __webpack_require__(7);
+
+var _CircleMeasurement2 = _interopRequireDefault(_CircleMeasurement);
+
+var _draftJs = __webpack_require__(16);
+
+__webpack_require__(14);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MeasurementLayerBase = function (_PureComponent) {
+	_inherits(MeasurementLayerBase, _PureComponent);
+
+	function MeasurementLayerBase() {
+		var _ref;
+
+		var _temp, _this, _ret;
+
+		_classCallCheck(this, MeasurementLayerBase);
+
+		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+			args[_key] = arguments[_key];
+		}
+
+		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = MeasurementLayerBase.__proto__ || Object.getPrototypeOf(MeasurementLayerBase)).call.apply(_ref, [this].concat(args))), _this), _this.createdId = null, _this.enabled = true, _this.doubleClicked = [], _this.state = { onInput: false, enableInput: true }, _this.createMeasurementComponent = function (measurement) {
+			if (measurement.type === "line") {
+				return _react2.default.createElement(_LineMeasurement2.default, {
+					anchor: _this.props.anchor,
+					doubleClicked: _this.doubleClicked,
+					enableInput: _this.state.enableInput,
+					key: measurement.id,
+					line: measurement,
+					parentWidth: _this.props.widthInPx,
+					parentHeight: _this.props.heightInPx,
+					measureLine: _this.props.measureLine,
+					onDoubleClick: _this.onDoubleClick,
+					onChange: _this.onChange,
+					onCommit: _this.props.onCommit,
+					onDeleteButtonClick: _this.delete,
+					onMidMouse: _this.onMidMouse,
+					onLabelClick: _this.onLabelClick,
+					onNumberChange: _this.onNumberChange,
+					onInput: _this.state.onInput,
+					onInputClick: _this.onInputClick,
+					onInputBlur: _this.onInputBlur,
+					onSelected: _this.onSelected
+				});
+			} else if (measurement.type === "circle") {
+				return _react2.default.createElement(_CircleMeasurement2.default, {
+					key: measurement.id,
+					circle: measurement,
+					parentWidth: _this.props.widthInPx,
+					parentHeight: _this.props.heightInPx,
+					measureCircle: _this.props.measureCircle,
+					onChange: _this.onChange,
+					onCommit: _this.props.onCommit,
+					onDeleteButtonClick: _this.delete
+				});
+			} else if (measurement.type === "text") {
+				return _react2.default.createElement("div", null)
+				// <TextAnnotation
+				// 	key={measurement.id}
+				// 	text={measurement}
+				// 	parentWidth={this.props.widthInPx}
+				// 	parentHeight={this.props.heightInPx}
+				// 	onChange={this.onChange}
+				// 	onCommit={this.props.onCommit}
+				// 	onDeleteButtonClick={this.delete}
+				// />
+				;
+			} else {
+				return false;
+			}
+		}, _this.keydown = function (e) {
+			// delete key
+			if (e.keyCode == 8) {
+				_this.props.onChange(_this.props.measurements.filter(function (n) {
+					return !_this.doubleClicked.includes(n.id);
+				}));
+				_this.doubleClicked = [];
+				_this.enabled = true;
+			}
+		}, _this.onDoubleClick = function (enable, m) {
+			// if (enable) {
+			// 	this.doubleClicked.push(m.id);
+			// } else {
+			// 	this.doubleClicked = this.doubleClicked.filter((n) => n !== m.id);
+			// }
+		}, _this.onMouseDown = function (event) {
+			// This function disables inputs
+			_this.setState(_extends({}, _this.state, { enableInput: false }));
+			if (_this.state.onInput) {
+				return;
+			}
+			if (_this.doubleClicked.length > 0) {
+				return;
+			}
+
+			_this.finishAnyTextEdit();
+			if (event.button === 0 && _this.enabled) {
+				if (_this.props.mode === "line" || _this.props.mode === null) {
+					event.preventDefault();
+					_this.lineCreationInProgress = true;
+					_this.mouseXAtPress = event.clientX;
+					_this.mouseYAtPress = event.clientY;
+				} else if (_this.props.mode === "circle") {
+					event.preventDefault();
+					_this.circleCreationInProgress = true;
+					_this.mouseXAtPress = event.clientX;
+					_this.mouseYAtPress = event.clientY;
+				}
+			}
+		}, _this.onMidMouse = function (state) {
+			if (_this.doubleClicked.length > 0) {
+				return;
+			}
+			if (state == "enter") {
+				_this.enabled = false;
+			} else {
+				_this.enabled = true;
+			}
+		}, _this.onMouseMove = function (event) {
+			if (_this.doubleClicked.length > 0) {
+				return;
+			}
+			if (_this.lineCreationInProgress) {
+				return;
+			} else if (_this.circleCreationInProgress) {
+				var rect = _this.root.getBoundingClientRect();
+				var cursorX = event.clientX - rect.left;
+				var cursorY = event.clientY - rect.top;
+				if (_this.createdId === null) {
+					_this.createdId = _this.getNextId();
+					var centerX = _this.clamp((_this.mouseXAtPress - rect.left) / _this.props.widthInPx);
+					var centerY = _this.clamp((_this.mouseYAtPress - rect.top) / _this.props.heightInPx);
+					var radius = _this.calculateRadius(cursorX, cursorY, centerX, centerY);
+					var circle = {
+						id: _this.createdId,
+						type: "circle",
+						centerX: centerX,
+						centerY: centerY,
+						radius: radius
+					};
+					_this.root.classList.add("circle-stroke-dragged");
+					_this.props.onChange([].concat(_toConsumableArray(_this.props.measurements), [circle]));
+				} else {
+					var _circle = _this.props.measurements.filter(function (a) {
+						return a.id === _this.createdId;
+					})[0];
+					var _radius = _this.calculateRadius(cursorX, cursorY, _circle.centerX, _circle.centerY);
+					_this.onChange(_extends({}, _circle, { radius: _radius }));
+				}
+			}
+		}, _this.calculateRadius = function (cursorX, cursorY, centerX, centerY) {
+			var deltaX = cursorX - centerX * _this.props.widthInPx;
+			var deltaY = cursorY - centerY * _this.props.heightInPx;
+			var radiusInPx = Math.max(Math.hypot(deltaX, deltaY), _CircleMeasurement.minRadiusInPx);
+			var radius = radiusInPx / Math.sqrt(_this.props.widthInPx * _this.props.widthInPx);
+
+			if (centerX + radius > 1) {
+				radius = 1 - centerX;
+			}
+			if (centerX - radius < 0) {
+				radius = centerX;
+			}
+			if (centerY + radius > 1) {
+				radius = 1 - centerY;
+			}
+			if (centerY - radius < 0) {
+				radius = centerY;
+			}
+			return radius;
+		}, _this.onMouseUp = function (event) {
+			return _this.endDrag();
+		}, _this.endDrag = function () {
+			if (_this.lineCreationInProgress) {
+				_this.lineCreationInProgress = false;
+				if (_this.createdId !== null) {
+					_this.root.classList.remove("line-end-dragged");
+				}
+			} else if (_this.circleCreationInProgress) {
+				_this.circleCreationInProgress = false;
+				if (_this.createdId !== null) {
+					_this.root.classList.remove("circle-stroke-dragged");
+				}
+			}
+			if (_this.createdId !== null) {
+				_this.props.onCommit(_this.props.measurements.filter(function (a) {
+					return a.id === _this.createdId;
+				})[0]);
+				_this.createdId = null;
+			}
+		}, _this.onClick = function (event) {
+			if (_this.doubleClicked.length > 0) {
+				return;
+			}
+			if (_this.props.mode === "text") {
+				var id = _this.getNextId();
+				var rect = _this.root.getBoundingClientRect();
+				var arrowX = (event.clientX - rect.left) / _this.props.widthInPx;
+				var arrowY = (event.clientY - rect.top) / _this.props.heightInPx;
+				var xOffsetDirection = arrowX < 0.8 ? 1 : -1;
+				var yOffsetDirection = arrowY < 0.8 ? 1 : -1;
+				var textX = arrowX + xOffsetDirection * 0.05;
+				var textY = arrowY + yOffsetDirection * 0.07;
+				var text = {
+					id: id,
+					type: "text",
+					arrowX: arrowX,
+					arrowY: arrowY,
+					textX: textX,
+					textY: textY,
+					editorState: null,
+					editable: true
+				};
+				_this.props.onChange([].concat(_toConsumableArray(_this.props.measurements), [text]));
+				_this.props.onCommit(text);
+			}
+		}, _this.getNextId = function () {
+			return _this.props.measurements.length > 0 ? Math.max.apply(Math, _toConsumableArray(_this.props.measurements.map(function (a) {
+				return a.id;
+			}))) + 1 : 0;
+		}, _this.onChange = function (m) {
+			if (_this.doubleClicked.length > 0) {
+				return;
+			}
+			_this.props.onChange(_this.props.measurements.map(function (n) {
+				return m.id === n.id ? m : n;
+			}));
+		}, _this.delete = function (m) {
+			_this.props.onChange(_this.props.measurements.filter(function (n) {
+				return n.id !== m.id;
+			}));
+			_this.props.onCommit(m);
+		}, _this.clamp = function (value) {
+			return Math.min(1, Math.max(0, value));
+		}, _this.onLabelClick = function (m) {
+			_this.props.onChange(_this.props.measurements.map(function (n) {
+				return m.id === n.id ? _extends({}, m, { label: m.label == 0 ? 1 : 0 }) : n;
+			}));
+		}, _this.onSelected = function (m) {
+			_this.props.onChange(_this.props.measurements.map(function (n) {
+				return m.id === n.id ? _extends({}, m, { active: true }) : _extends({}, n, { active: false });
+			}));
+		}, _this.onNumberChange = function (m, value) {
+			_this.props.onChange(_this.props.measurements.map(function (n) {
+				return m.id === n.id ? _extends({}, m, { number: value }) : n;
+			}));
+		}, _this.finishAnyTextEdit = function () {
+			var editable = _this.props.measurements.filter(function (m) {
+				return m.type === "text" && m.editable;
+			})[0];
+			if (editable) {
+				_this.props.onChange(_this.props.measurements.map(function (m) {
+					return m === editable ? _this.finishEdit(m) : m;
+				}));
+			}
+		}, _this.finishEdit = function (text) {
+			return _extends({}, text, {
+				editorState: _draftJs.EditorState.moveFocusToEnd(_draftJs.EditorState.moveSelectionToEnd(text.editorState)),
+				editable: false
+			});
+		}, _this.onInputClick = function () {
+			_this.setState(_extends({}, _this.state, { onInput: true, enableInput: true }));
+		}, _this.onInputBlur = function () {
+			_this.setState(_extends({}, _this.state, { onInput: false }));
+		}, _temp), _possibleConstructorReturn(_this, _ret);
+	}
+
+	_createClass(MeasurementLayerBase, [{
+		key: "componentDidMount",
+		value: function componentDidMount() {
+			this.root.addEventListener("mousedown", this.onMouseDown);
+			this.root.addEventListener("click", this.onClick);
+			document.addEventListener("mousemove", this.onMouseMove);
+			window.addEventListener("mouseup", this.onMouseUp);
+			window.addEventListener("blur", this.endDrag);
+			window.addEventListener("keydown", this.keydown);
+
+			if (this.props.event) {
+				this.onMouseDown(event);
+			}
+		}
+	}, {
+		key: "componentWillUnmount",
+		value: function componentWillUnmount() {
+			this.root.removeEventListener("mousedown", this.onMouseDown);
+			this.root.removeEventListener("click", this.onClick);
+			document.removeEventListener("mousemove", this.onMouseMove);
+			window.removeEventListener("mouseup", this.onMouseUp);
+			window.removeEventListener("blur", this.endDrag);
+			window.removeEventListener("keydown", this.keydown);
+		}
+	}, {
+		key: "render",
+		value: function render() {
+			var _this2 = this;
+
+			var className = "measurement-layer-base" + (this.props.mode ? " any-mode-on" : "");
+
+			if (this.props.disabled) {
+				this.doubleClicked = [];
+				this.enabled = true;
+			}
+
+			return _react2.default.createElement(
+				"div",
+				{ className: className, ref: function ref(e) {
+						return _this2.root = e;
+					} },
+				this.props.measurements.map(this.createMeasurementComponent)
+			);
+		}
+	}]);
+
+	return MeasurementLayerBase;
+}(_react.PureComponent);
+
+exports.default = MeasurementLayerBase;
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -238,354 +589,6 @@ var InputAnchor = function (_PureComponent) {
 exports.default = InputAnchor;
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _LineMeasurement = __webpack_require__(12);
-
-var _LineMeasurement2 = _interopRequireDefault(_LineMeasurement);
-
-var _CircleMeasurement = __webpack_require__(10);
-
-var _CircleMeasurement2 = _interopRequireDefault(_CircleMeasurement);
-
-var _TextAnnotation = __webpack_require__(13);
-
-var _TextAnnotation2 = _interopRequireDefault(_TextAnnotation);
-
-var _draftJs = __webpack_require__(5);
-
-__webpack_require__(18);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var MeasurementLayerBase = function (_PureComponent) {
-	_inherits(MeasurementLayerBase, _PureComponent);
-
-	function MeasurementLayerBase() {
-		var _ref;
-
-		var _temp, _this, _ret;
-
-		_classCallCheck(this, MeasurementLayerBase);
-
-		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-			args[_key] = arguments[_key];
-		}
-
-		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = MeasurementLayerBase.__proto__ || Object.getPrototypeOf(MeasurementLayerBase)).call.apply(_ref, [this].concat(args))), _this), _this.createdId = null, _this.enabled = true, _this.doubleClicked = [], _this.state = { onInput: false }, _this.createMeasurementComponent = function (measurement) {
-			if (measurement.type === "line") {
-				return _react2.default.createElement(_LineMeasurement2.default, {
-					anchor: _this.props.anchor,
-					doubleClicked: _this.doubleClicked,
-					key: measurement.id,
-					line: measurement,
-					parentWidth: _this.props.widthInPx,
-					parentHeight: _this.props.heightInPx,
-					measureLine: _this.props.measureLine,
-					onDoubleClick: _this.onDoubleClick,
-					onChange: _this.onChange,
-					onCommit: _this.props.onCommit,
-					onDeleteButtonClick: _this.delete,
-					onMidMouse: _this.onMidMouse,
-					onLabelClick: _this.onLabelClick,
-					onNumberChange: _this.onNumberChange,
-					onInput: _this.state.onInput,
-					onInputClick: _this.onInputClick,
-					onInputBlur: _this.onInputBlur
-				});
-			} else if (measurement.type === "circle") {
-				return _react2.default.createElement(_CircleMeasurement2.default, {
-					key: measurement.id,
-					circle: measurement,
-					parentWidth: _this.props.widthInPx,
-					parentHeight: _this.props.heightInPx,
-					measureCircle: _this.props.measureCircle,
-					onChange: _this.onChange,
-					onCommit: _this.props.onCommit,
-					onDeleteButtonClick: _this.delete
-				});
-			} else if (measurement.type === "text") {
-				return _react2.default.createElement("div", null)
-				// <TextAnnotation
-				// 	key={measurement.id}
-				// 	text={measurement}
-				// 	parentWidth={this.props.widthInPx}
-				// 	parentHeight={this.props.heightInPx}
-				// 	onChange={this.onChange}
-				// 	onCommit={this.props.onCommit}
-				// 	onDeleteButtonClick={this.delete}
-				// />
-				;
-			} else {
-				return false;
-			}
-		}, _this.keydown = function (e) {
-			// delete key
-			if (e.keyCode == 8) {
-				_this.props.onChange(_this.props.measurements.filter(function (n) {
-					return !_this.doubleClicked.includes(n.id);
-				}));
-				_this.doubleClicked = [];
-				_this.enabled = true;
-			}
-		}, _this.onDoubleClick = function (enable, m) {
-			// if (enable) {
-			// 	this.doubleClicked.push(m.id);
-			// } else {
-			// 	this.doubleClicked = this.doubleClicked.filter((n) => n !== m.id);
-			// }
-		}, _this.onMouseDown = function (event) {
-			// This function disables inputs
-			if (_this.state.onInput) {
-				return;
-			}
-			if (_this.doubleClicked.length > 0) {
-				return;
-			}
-
-			_this.finishAnyTextEdit();
-			if (event.button === 0 && _this.enabled) {
-				if (_this.props.mode === "line" || _this.props.mode === null) {
-					event.preventDefault();
-					_this.lineCreationInProgress = true;
-					_this.mouseXAtPress = event.clientX;
-					_this.mouseYAtPress = event.clientY;
-				} else if (_this.props.mode === "circle") {
-					event.preventDefault();
-					_this.circleCreationInProgress = true;
-					_this.mouseXAtPress = event.clientX;
-					_this.mouseYAtPress = event.clientY;
-				}
-			}
-		}, _this.onMidMouse = function (state) {
-			if (_this.doubleClicked.length > 0) {
-				return;
-			}
-			if (state == "enter") {
-				_this.enabled = false;
-			} else {
-				_this.enabled = true;
-			}
-		}, _this.onMouseMove = function (event) {
-			if (_this.doubleClicked.length > 0) {
-				return;
-			}
-			if (_this.lineCreationInProgress) {
-				return;
-			} else if (_this.circleCreationInProgress) {
-				var rect = _this.root.getBoundingClientRect();
-				var cursorX = event.clientX - rect.left;
-				var cursorY = event.clientY - rect.top;
-				if (_this.createdId === null) {
-					_this.createdId = _this.getNextId();
-					var centerX = _this.clamp((_this.mouseXAtPress - rect.left) / _this.props.widthInPx);
-					var centerY = _this.clamp((_this.mouseYAtPress - rect.top) / _this.props.heightInPx);
-					var radius = _this.calculateRadius(cursorX, cursorY, centerX, centerY);
-					var circle = {
-						id: _this.createdId,
-						type: "circle",
-						centerX: centerX,
-						centerY: centerY,
-						radius: radius
-					};
-					_this.root.classList.add("circle-stroke-dragged");
-					_this.props.onChange([].concat(_toConsumableArray(_this.props.measurements), [circle]));
-				} else {
-					var _circle = _this.props.measurements.filter(function (a) {
-						return a.id === _this.createdId;
-					})[0];
-					var _radius = _this.calculateRadius(cursorX, cursorY, _circle.centerX, _circle.centerY);
-					_this.onChange(_extends({}, _circle, { radius: _radius }));
-				}
-			}
-		}, _this.calculateRadius = function (cursorX, cursorY, centerX, centerY) {
-			var deltaX = cursorX - centerX * _this.props.widthInPx;
-			var deltaY = cursorY - centerY * _this.props.heightInPx;
-			var radiusInPx = Math.max(Math.hypot(deltaX, deltaY), _CircleMeasurement.minRadiusInPx);
-			var radius = radiusInPx / Math.sqrt(_this.props.widthInPx * _this.props.widthInPx);
-
-			if (centerX + radius > 1) {
-				radius = 1 - centerX;
-			}
-			if (centerX - radius < 0) {
-				radius = centerX;
-			}
-			if (centerY + radius > 1) {
-				radius = 1 - centerY;
-			}
-			if (centerY - radius < 0) {
-				radius = centerY;
-			}
-			return radius;
-		}, _this.onMouseUp = function (event) {
-			return _this.endDrag();
-		}, _this.endDrag = function () {
-			if (_this.lineCreationInProgress) {
-				_this.lineCreationInProgress = false;
-				if (_this.createdId !== null) {
-					_this.root.classList.remove("line-end-dragged");
-				}
-			} else if (_this.circleCreationInProgress) {
-				_this.circleCreationInProgress = false;
-				if (_this.createdId !== null) {
-					_this.root.classList.remove("circle-stroke-dragged");
-				}
-			}
-			if (_this.createdId !== null) {
-				_this.props.onCommit(_this.props.measurements.filter(function (a) {
-					return a.id === _this.createdId;
-				})[0]);
-				_this.createdId = null;
-			}
-		}, _this.onClick = function (event) {
-			if (_this.doubleClicked.length > 0) {
-				return;
-			}
-			if (_this.props.mode === "text") {
-				var id = _this.getNextId();
-				var rect = _this.root.getBoundingClientRect();
-				var arrowX = (event.clientX - rect.left) / _this.props.widthInPx;
-				var arrowY = (event.clientY - rect.top) / _this.props.heightInPx;
-				var xOffsetDirection = arrowX < 0.8 ? 1 : -1;
-				var yOffsetDirection = arrowY < 0.8 ? 1 : -1;
-				var textX = arrowX + xOffsetDirection * 0.05;
-				var textY = arrowY + yOffsetDirection * 0.07;
-				var text = {
-					id: id,
-					type: "text",
-					arrowX: arrowX,
-					arrowY: arrowY,
-					textX: textX,
-					textY: textY,
-					editorState: null,
-					editable: true
-				};
-				_this.props.onChange([].concat(_toConsumableArray(_this.props.measurements), [text]));
-				_this.props.onCommit(text);
-			}
-		}, _this.getNextId = function () {
-			return _this.props.measurements.length > 0 ? Math.max.apply(Math, _toConsumableArray(_this.props.measurements.map(function (a) {
-				return a.id;
-			}))) + 1 : 0;
-		}, _this.onChange = function (m) {
-			if (_this.doubleClicked.length > 0) {
-				return;
-			}
-			_this.props.onChange(_this.props.measurements.map(function (n) {
-				return m.id === n.id ? m : n;
-			}));
-		}, _this.delete = function (m) {
-			_this.props.onChange(_this.props.measurements.filter(function (n) {
-				return n.id !== m.id;
-			}));
-			_this.props.onCommit(m);
-		}, _this.clamp = function (value) {
-			return Math.min(1, Math.max(0, value));
-		}, _this.onLabelClick = function (m) {
-			_this.props.onChange(_this.props.measurements.map(function (n) {
-				return m.id === n.id ? _extends({}, m, { label: m.label == 0 ? 1 : 0 }) : n;
-			}));
-		}, _this.onNumberChange = function (m, value) {
-			_this.props.onChange(_this.props.measurements.map(function (n) {
-				return m.id === n.id ? _extends({}, m, { number: value }) : n;
-			}));
-		}, _this.finishAnyTextEdit = function () {
-			var editable = _this.props.measurements.filter(function (m) {
-				return m.type === "text" && m.editable;
-			})[0];
-			if (editable) {
-				_this.props.onChange(_this.props.measurements.map(function (m) {
-					return m === editable ? _this.finishEdit(m) : m;
-				}));
-			}
-		}, _this.finishEdit = function (text) {
-			return _extends({}, text, {
-				editorState: _draftJs.EditorState.moveFocusToEnd(_draftJs.EditorState.moveSelectionToEnd(text.editorState)),
-				editable: false
-			});
-		}, _this.onInputClick = function () {
-			_this.setState(_extends({}, _this.state, { onInput: true }));
-		}, _this.onInputBlur = function () {
-			_this.setState(_extends({}, _this.state, { onInput: false }));
-		}, _temp), _possibleConstructorReturn(_this, _ret);
-	}
-
-	_createClass(MeasurementLayerBase, [{
-		key: "componentDidMount",
-		value: function componentDidMount() {
-			this.root.addEventListener("mousedown", this.onMouseDown);
-			this.root.addEventListener("click", this.onClick);
-			document.addEventListener("mousemove", this.onMouseMove);
-			window.addEventListener("mouseup", this.onMouseUp);
-			window.addEventListener("blur", this.endDrag);
-			window.addEventListener("keydown", this.keydown);
-
-			if (this.props.event) {
-				this.onMouseDown(event);
-			}
-		}
-	}, {
-		key: "componentWillUnmount",
-		value: function componentWillUnmount() {
-			this.root.removeEventListener("mousedown", this.onMouseDown);
-			this.root.removeEventListener("click", this.onClick);
-			document.removeEventListener("mousemove", this.onMouseMove);
-			window.removeEventListener("mouseup", this.onMouseUp);
-			window.removeEventListener("blur", this.endDrag);
-			window.removeEventListener("keydown", this.keydown);
-		}
-	}, {
-		key: "render",
-		value: function render() {
-			var _this2 = this;
-
-			var className = "measurement-layer-base" + (this.props.mode ? " any-mode-on" : "");
-
-			if (this.props.disabled) {
-				this.doubleClicked = [];
-				this.enabled = true;
-			}
-
-			return _react2.default.createElement(
-				"div",
-				{ className: className, ref: function ref(e) {
-						return _this2.root = e;
-					} },
-				this.props.measurements.map(this.createMeasurementComponent)
-			);
-		}
-	}]);
-
-	return MeasurementLayerBase;
-}(_react.PureComponent);
-
-exports.default = MeasurementLayerBase;
-
-/***/ }),
 /* 3 */
 /***/ (function(module, exports) {
 
@@ -724,7 +727,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(19);
+var	fixUrls = __webpack_require__(15);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -1041,12 +1044,6 @@ function updateLink (link, options, obj) {
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports) {
-
-module.exports = require("draft-js");
-
-/***/ }),
-/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1062,15 +1059,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _MeasurementLayerBase = __webpack_require__(2);
+var _MeasurementLayerBase = __webpack_require__(1);
 
 var _MeasurementLayerBase2 = _interopRequireDefault(_MeasurementLayerBase);
 
-var _MeasurementButtons = __webpack_require__(9);
-
-var _MeasurementButtons2 = _interopRequireDefault(_MeasurementButtons);
-
-__webpack_require__(17);
+__webpack_require__(13);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1144,7 +1137,7 @@ var MeasurementLayer = function (_PureComponent) {
 exports.default = MeasurementLayer;
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1164,165 +1157,7 @@ var calculateArea = exports.calculateArea = function calculateArea(circle, physi
 };
 
 /***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.TextIcon = exports.CircleIcon = exports.RulerIcon = undefined;
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var RulerIcon = exports.RulerIcon = function RulerIcon() {
-  var path = "M 1 2 L 1 12 L 1 13 L 14 13 L 14 12 L 14 2 L 1 2 z M 2 3 L 3 3 L 3 5 L 2 5 L 2 3 z M 4 3 L 5 3 L 5 8 L 4 8 L 4 3 z M 6 3 " + "L 7 3 L 7 5 L 6 5 L 6 3 z M 8 3 L 9 3 L 9 5 L 8 5 L 8 3 z M 10 3 L 11 3 L 11 8 L 10 8 L 10 3 z M 12 3 L 13 3 L 13 5 L 12 5 L 12 3 z ";
-  return _react2.default.createElement(
-    "svg",
-    { width: "15", height: "15" },
-    _react2.default.createElement("path", { d: path, className: "ruler-icon" })
-  );
-};
-
-var CircleIcon = exports.CircleIcon = function CircleIcon() {
-  return _react2.default.createElement(
-    "svg",
-    { width: "15", height: "15" },
-    _react2.default.createElement("circle", { className: "circle-icon", cx: "7.5", cy: "7.5", r: "5.5" })
-  );
-};
-
-var TextIcon = exports.TextIcon = function TextIcon() {
-  var path = "M 5.6367188 1 L 1 14 L 4.2617188 14 L 5.1308594 11.371094 L 9.7851562 11.371094 L 10.652344 14 L 14 14 " + "L 9.3632812 1 L 5.6367188 1 z M 7.4570312 4.3261719 L 9 8.9882812 L 5.9160156 8.9882812 L 7.4570312 4.3261719 z ";
-  return _react2.default.createElement(
-    "svg",
-    { width: "15", height: "15" },
-    _react2.default.createElement("path", { d: path, className: "text-icon" })
-  );
-};
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _Icons = __webpack_require__(8);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var MeasurementButtons = function (_PureComponent) {
-  _inherits(MeasurementButtons, _PureComponent);
-
-  function MeasurementButtons() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
-    _classCallCheck(this, MeasurementButtons);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = MeasurementButtons.__proto__ || Object.getPrototypeOf(MeasurementButtons)).call.apply(_ref, [this].concat(args))), _this), _this.onRootMouseDown = function (event) {
-      event.stopPropagation();
-      event.preventDefault();
-    }, _temp), _possibleConstructorReturn(_this, _ret);
-  }
-
-  _createClass(MeasurementButtons, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      this.root.addEventListener("mousedown", this.onRootMouseDown);
-    }
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      this.root.addEventListener("mousedown", this.onRootMouseDown);
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this2 = this;
-
-      var rootClass = "button-bar" + (this.props.mode ? " pressed" : "");
-      var lineClass = "line-button" + (this.props.mode === "line" ? " pressed" : "");
-      var circleClass = "circle-button" + (this.props.mode === "circle" ? " pressed" : "");
-      var textClass = "text-button" + (this.props.mode === "text" ? " pressed" : "");
-
-      return _react2.default.createElement(
-        "div",
-        { className: rootClass, ref: function ref(e) {
-            return _this2.root = e;
-          } },
-        _react2.default.createElement(
-          "button",
-          {
-            type: "button",
-            className: lineClass,
-            onClick: function onClick(event) {
-              return _this2.props.onClick("line");
-            }
-          },
-          _react2.default.createElement(_Icons.RulerIcon, null)
-        ),
-        _react2.default.createElement(
-          "button",
-          {
-            type: "button",
-            className: circleClass,
-            onClick: function onClick(event) {
-              return _this2.props.onClick("circle");
-            }
-          },
-          _react2.default.createElement(_Icons.CircleIcon, null)
-        ),
-        _react2.default.createElement(
-          "button",
-          {
-            type: "button",
-            className: textClass,
-            onClick: function onClick(event) {
-              return _this2.props.onClick("text");
-            }
-          },
-          _react2.default.createElement(_Icons.TextIcon, null)
-        )
-      );
-    }
-  }]);
-
-  return MeasurementButtons;
-}(_react.PureComponent);
-
-exports.default = MeasurementButtons;
-
-/***/ }),
-/* 10 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1341,7 +1176,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _TextAnchor = __webpack_require__(1);
+var _TextAnchor = __webpack_require__(2);
 
 var _TextAnchor2 = _interopRequireDefault(_TextAnchor);
 
@@ -1572,7 +1407,7 @@ var CircleMeasurement = function (_PureComponent) {
 exports.default = CircleMeasurement;
 
 /***/ }),
-/* 11 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1682,7 +1517,7 @@ var InputAnchor = function (_PureComponent) {
 		value: function render() {
 			var _this3 = this;
 
-			var handlerClassName = this.props.handlerClassName;
+			var handlerClassName = this.props.handlerClassName + (this.props.active ? " selected" : "");
 			var textAnchorStyle = {
 				left: this.props.x + "px",
 				top: this.props.y + "px"
@@ -1690,7 +1525,7 @@ var InputAnchor = function (_PureComponent) {
 			var className = "text-anchor" + (this.state.buttonShowing ? " button-showing " : "") + (this.state.justCreated ? " just-created" : "");
 
 			var deleteClassName = this.state.buttonShowing ? " delete-button-2 " : "delete-hide";
-
+			var labelColor = this.props.label ? " mesial" : "";
 			return _react2.default.createElement(
 				"div",
 				{ className: className, style: textAnchorStyle },
@@ -1718,12 +1553,13 @@ var InputAnchor = function (_PureComponent) {
 							},
 							type: "text",
 							value: this.state.value,
-							onChange: this.handleChange
+							onChange: this.handleChange,
+							disabled: !this.props.enableInput
 						}),
 						_react2.default.createElement(
 							"div",
 							{
-								className: "type" + handlerClassName,
+								className: "type" + labelColor,
 								ref: function ref(e) {
 									return _this3.text = e;
 								},
@@ -1763,7 +1599,7 @@ var InputAnchor = function (_PureComponent) {
 exports.default = InputAnchor;
 
 /***/ }),
-/* 12 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1781,11 +1617,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _InputAnchor = __webpack_require__(11);
+var _InputAnchor = __webpack_require__(8);
 
 var _InputAnchor2 = _interopRequireDefault(_InputAnchor);
 
-var _TextAnchor = __webpack_require__(1);
+var _TextAnchor = __webpack_require__(2);
 
 var _TextAnchor2 = _interopRequireDefault(_TextAnchor);
 
@@ -1820,8 +1656,10 @@ var LineMeasurement = function (_PureComponent) {
 				return;
 			}
 			if (event.button === 0) {
+				_this.props.onSelected(_this.props.line);
 				_this.startDragInProgress = true;
 				event.preventDefault();
+				_this.setState(_extends({}, _this.state, { enableInput: false }));
 				_this.onDragBegin(event.clientX, event.clientY);
 			}
 		}, _this.onMidMouseDown = function (event) {
@@ -1844,6 +1682,7 @@ var LineMeasurement = function (_PureComponent) {
 			}
 		}, _this.onDragBegin = function (eventX, eventY) {
 			// This function disables inputs
+			_this.props.onSelected(_this.props.line);
 			_this.mouseXAtPress = eventX;
 			_this.mouseYAtPress = eventY;
 			_this.lineAtPress = _this.props.line;
@@ -2143,10 +1982,12 @@ var LineMeasurement = function (_PureComponent) {
 				this.props.anchor ? _react2.default.createElement(_InputAnchor2.default, {
 					x: textX,
 					y: textY,
+					active: this.props.line.active,
 					rotate: textRotate,
 					onLabelClick: this.onLabelClick,
 					onNumberChange: this.onNumberChange,
 					onDeleteButtonClick: this.onDeleteButtonClick,
+					enableInput: this.props.enableInput,
 					handlerClassName: handlerClassName,
 					label: this.props.line.label,
 					number: this.props.line.number,
@@ -2171,445 +2012,21 @@ var LineMeasurement = function (_PureComponent) {
 exports.default = LineMeasurement;
 
 /***/ }),
-/* 13 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _draftJs = __webpack_require__(5);
-
-var _TextAnchor = __webpack_require__(1);
-
-var _TextAnchor2 = _interopRequireDefault(_TextAnchor);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var headWidth = 8;
-var headHeight = 5;
-var headHoverWidth = 10;
-var headHoverHeight = 6;
-var headHoverOffset = 1.5;
-var headGrabberWidth = 15;
-var headGrabberHeight = 9;
-var headGrabberOffset = 3;
-
-var TextAnnotation = function (_PureComponent) {
-  _inherits(TextAnnotation, _PureComponent);
-
-  function TextAnnotation() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
-    _classCallCheck(this, TextAnnotation);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TextAnnotation.__proto__ || Object.getPrototypeOf(TextAnnotation)).call.apply(_ref, [this].concat(args))), _this), _this.propagateTextChanges = false, _this.state = {
-      lineHover: false,
-      headHover: false,
-      lineDragged: false,
-      headDragged: false,
-      textDragged: false
-    }, _this.drawHead = function (pointX, pointY, w, h, rotate, offset, cos, sin) {
-      var x = pointX + offset * cos;
-      var y = pointY + offset * sin;
-      var path = "M " + (x - w) + " " + (y - h) + " L " + x + " " + y + " L " + (x - w) + " " + (y + h) + " Z";
-      var rotateInDegrees = rotate * 180 / Math.PI;
-      var transform = "rotate(" + rotateInDegrees + " " + x + " " + y + ")";
-      return { path: path, transform: transform };
-    }, _this.updateMask = function () {
-      var rootBox = _this.root.getBoundingClientRect();
-      var textBox = _this.text.getBoundingClientRect();
-
-      _this.maskRect.setAttribute("x", textBox.left - rootBox.left);
-      _this.maskRect.setAttribute("y", textBox.top - rootBox.top);
-      _this.maskRect.setAttribute("width", textBox.width);
-      _this.maskRect.setAttribute("height", textBox.height);
-    }, _this.onTextMouseDown = function (event) {
-      if (_this.props.text.editable) {
-        event.stopPropagation();
-      } else if (event.button === 0) {
-        _this.textDragInProgress = true;
-        event.preventDefault();
-        _this.onDragBegin(event.clientX, event.clientY);
-      }
-    }, _this.onLineMouseDown = function (event) {
-      if (event.button === 0) {
-        _this.lineDragInProgress = true;
-        event.preventDefault();
-        _this.onDragBegin(event.clientX, event.clientY);
-        if (_this.props.text.editable) {
-          event.stopPropagation();
-        }
-      }
-    }, _this.onHeadMouseDown = function (event) {
-      if (event.button === 0) {
-        _this.headDragInProgress = true;
-        event.preventDefault();
-        _this.onDragBegin(event.clientX, event.clientY);
-        if (_this.props.text.editable) {
-          event.stopPropagation();
-        }
-      }
-    }, _this.onDragBegin = function (eventX, eventY) {
-      _this.mouseXAtPress = eventX;
-      _this.mouseYAtPress = eventY;
-      _this.textAtPress = _this.props.text;
-      _this.arrowXAtPress = _this.props.text.arrowX * _this.props.parentWidth;
-      _this.arrowYAtPress = _this.props.text.arrowY * _this.props.parentHeight;
-      _this.textXAtPress = _this.props.text.textX * _this.props.parentWidth;
-      _this.textYAtPress = _this.props.text.textY * _this.props.parentHeight;
-    }, _this.onMouseMove = function (event) {
-      return _this.onDrag(event.clientX, event.clientY);
-    }, _this.onDrag = function (eventX, eventY) {
-      if ((_this.textDragInProgress || _this.lineDragInProgress || _this.headDragInProgress) && _this.props.text.editable) {
-        _this.finishEdit();
-      }
-
-      if ((_this.textDragInProgress || _this.lineDragInProgress || _this.headDragInProgress) && !_this.dragOccurred) {
-        _this.dragOccurred = true;
-        _this.toggleDragStyles();
-      }
-
-      if (_this.headDragInProgress) {
-        var arrowX = _this.clamp(_this.getXAfterDrag(_this.arrowXAtPress, eventX));
-        var arrowY = _this.clamp(_this.getYAfterDrag(_this.arrowYAtPress, eventY));
-        _this.props.onChange(_extends({}, _this.props.text, { arrowX: arrowX, arrowY: arrowY }));
-      } else if (_this.textDragInProgress) {
-        var textX = _this.clamp(_this.getXAfterDrag(_this.textXAtPress, eventX));
-        var textY = _this.clamp(_this.getYAfterDrag(_this.textYAtPress, eventY));
-        _this.props.onChange(_extends({}, _this.props.text, { textX: textX, textY: textY }));
-      } else if (_this.lineDragInProgress) {
-        var _arrowX = _this.getXAfterDrag(_this.arrowXAtPress, eventX);
-        var _arrowY = _this.getYAfterDrag(_this.arrowYAtPress, eventY);
-        var _textX = _this.getXAfterDrag(_this.textXAtPress, eventX);
-        var _textY = _this.getYAfterDrag(_this.textYAtPress, eventY);
-        var deltaX = _textX - _arrowX;
-        var deltaY = _textY - _arrowY;
-
-        if (_arrowX < 0) {
-          _arrowX = 0;
-          _textX = deltaX;
-        } else if (_arrowX > 1) {
-          _arrowX = 1;
-          _textX = 1 + deltaX;
-        }
-        if (_arrowY < 0) {
-          _arrowY = 0;
-          _textY = deltaY;
-        } else if (_arrowY > 1) {
-          _arrowY = 1;
-          _textY = 1 + deltaY;
-        }
-        if (_textX < 0) {
-          _arrowX = -deltaX;
-          _textX = 0;
-        } else if (_textX > 1) {
-          _arrowX = 1 - deltaX;
-          _textX = 1;
-        }
-        if (_textY < 0) {
-          _arrowY = -deltaY;
-          _textY = 0;
-        } else if (_textY > 1) {
-          _arrowY = 1 - deltaY;
-          _textY = 1;
-        }
-        _this.props.onChange(_extends({}, _this.props.text, { arrowX: _arrowX, arrowY: _arrowY, textX: _textX, textY: _textY }));
-      }
-    }, _this.getXAfterDrag = function (xAtPress, clientX) {
-      return (xAtPress + clientX - _this.mouseXAtPress) / _this.props.parentWidth;
-    }, _this.getYAfterDrag = function (yAtPress, clientY) {
-      return (yAtPress + clientY - _this.mouseYAtPress) / _this.props.parentHeight;
-    }, _this.onMouseUp = function (event) {
-      return _this.endDrag();
-    }, _this.endDrag = function () {
-      if (_this.dragOccurred) {
-        _this.toggleDragStyles();
-        _this.dragOccurred = false;
-      }
-
-      var anyDragAttempted = _this.textDragInProgress || _this.lineDragInProgress || _this.headDragInProgress;
-      if (_this.textDragInProgress) {
-        _this.textDragInProgress = false;
-      }
-      if (_this.lineDragInProgress) {
-        _this.lineDragInProgress = false;
-      }
-      if (_this.headDragInProgress) {
-        _this.headDragInProgress = false;
-      }
-      if (anyDragAttempted && _this.didValuesChange()) {
-        _this.props.onCommit(_this.props.text);
-      }
-    }, _this.didValuesChange = function () {
-      return _this.props.text.arrowX !== _this.textAtPress.arrowX || _this.props.text.arrowY !== _this.textAtPress.arrowY || _this.props.text.textX !== _this.textAtPress.textX || _this.props.text.textY !== _this.textAtPress.textY;
-    }, _this.toggleDragStyles = function () {
-      _this.getAnnotationLayerClassList().toggle("any-dragged");
-      if (_this.textDragInProgress) {
-        _this.getAnnotationLayerClassList().toggle("text-dragged");
-        _this.setState(_extends({}, _this.state, { textDragged: !_this.state.textDragged }));
-      } else if (_this.lineDragInProgress) {
-        _this.getAnnotationLayerClassList().toggle("arrow-line-dragged");
-        _this.setState(_extends({}, _this.state, { lineDragged: !_this.state.lineDragged }));
-      } else if (_this.headDragInProgress) {
-        _this.getAnnotationLayerClassList().toggle("arrow-head-dragged");
-        _this.setState(_extends({}, _this.state, { headDragged: !_this.state.headDragged }));
-      }
-    }, _this.onLineMouseEnter = function (event) {
-      return _this.setState(_extends({}, _this.state, { lineHover: true }));
-    }, _this.onLineMouseLeave = function (event) {
-      return _this.setState(_extends({}, _this.state, { lineHover: false }));
-    }, _this.onHeadMouseEnter = function (event) {
-      return _this.setState(_extends({}, _this.state, { headHover: true }));
-    }, _this.onHeadMouseLeave = function (event) {
-      return _this.setState(_extends({}, _this.state, { headHover: false }));
-    }, _this.getAnnotationLayerClassList = function () {
-      return _this.root.parentElement.classList;
-    }, _this.clamp = function (value) {
-      return Math.min(1, Math.max(0, value));
-    }, _this.onDoubleClick = function (event) {
-      if (event.button === 0) {
-        event.preventDefault();
-        _this.startEdit();
-      }
-    }, _this.onTextChange = function (editorState) {
-      if (_this.propagateTextChanges) {
-        _this.props.onChange(_extends({}, _this.props.text, { editorState: editorState }));
-      }
-    }, _this.startEdit = function () {
-      if (!_this.props.text.editable) {
-        _this.contentStateOnEditStart = _this.props.text.editorState.getCurrentContent();
-        _this.setEditState(true);
-      }
-    }, _this.finishEdit = function () {
-      if (_this.props.text.editable) {
-        _this.setEditState(false);
-        if (_this.contentStateOnEditStart !== _this.props.text.editorState.getCurrentContent()) {
-          _this.props.onCommit(_this.props.text);
-        }
-      }
-    }, _this.setEditState = function (editable) {
-      _this.propagateTextChanges = editable;
-      // Note: selection change is also important when we finish editing because it clears the selection.
-      var editorState = _draftJs.EditorState.moveFocusToEnd(_draftJs.EditorState.moveSelectionToEnd(_this.props.text.editorState));
-      _this.props.onChange(_extends({}, _this.props.text, { editorState: editorState, editable: editable }));
-    }, _this.onDocumentKeyDown = function (event) {
-      if (_this.props.text.editable && (event.keyCode === 27 || event.keyCode === 13 && !event.shiftKey)) {
-        event.stopPropagation();
-        _this.finishEdit();
-      }
-    }, _this.onDeleteButtonClick = function () {
-      return _this.props.onDeleteButtonClick(_this.props.text);
-    }, _temp), _possibleConstructorReturn(_this, _ret);
-  }
-
-  _createClass(TextAnnotation, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      this.text.addEventListener("mousedown", this.onTextMouseDown);
-      this.lineGrabber.addEventListener("mousedown", this.onLineMouseDown);
-      this.lineGrabber.addEventListener("mouseenter", this.onLineMouseEnter);
-      this.lineGrabber.addEventListener("mouseleave", this.onLineMouseLeave);
-      this.headGrabber.addEventListener("mousedown", this.onHeadMouseDown);
-      this.headGrabber.addEventListener("mouseenter", this.onHeadMouseEnter);
-      this.headGrabber.addEventListener("mouseleave", this.onHeadMouseLeave);
-      this.root.addEventListener("dblclick", this.onDoubleClick);
-      document.addEventListener("mousemove", this.onMouseMove);
-      document.addEventListener("keydown", this.onDocumentKeyDown, true);
-      window.addEventListener("mouseup", this.onMouseUp);
-      window.addEventListener("blur", this.endDrag);
-      this.updateMask();
-
-      if (this.props.text.editable) {
-        this.propagateTextChanges = true;
-        this.editor.focus();
-      }
-    }
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      this.text.removeEventListener("mousedown", this.onTextMouseDown);
-      this.lineGrabber.removeEventListener("mousedown", this.onLineMouseDown);
-      this.lineGrabber.removeEventListener("mouseenter", this.onLineMouseEnter);
-      this.lineGrabber.removeEventListener("mouseleave", this.onLineMouseLeave);
-      this.headGrabber.removeEventListener("mousedown", this.onHeadMouseDown);
-      this.headGrabber.removeEventListener("mouseenter", this.onHeadMouseEnter);
-      this.headGrabber.removeEventListener("mouseleave", this.onHeadMouseLeave);
-      this.root.removeEventListener("dblclick", this.onDoubleClick);
-      this.root.removeEventListener("touchstart", this.onRootTouchStart);
-      document.removeEventListener("mousemove", this.onMouseMove);
-      document.removeEventListener("keydown", this.onDocumentKeyDown, true);
-      window.removeEventListener("mouseup", this.onMouseUp);
-      window.removeEventListener("blur", this.endDrag);
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate() {
-      this.updateMask();
-      if (!this.props.text.editable) {
-        this.propagateTextChanges = false;
-      }
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this2 = this;
-
-      var pointX = this.props.text.arrowX * this.props.parentWidth;
-      var pointY = this.props.text.arrowY * this.props.parentHeight;
-      var textX = this.props.text.textX * this.props.parentWidth;
-      var textY = this.props.text.textY * this.props.parentHeight;
-      var rotate = Math.atan2(pointX - textX, textY - pointY) - Math.PI / 2;
-      var cos = Math.cos(rotate);
-      var sin = Math.sin(rotate);
-
-      var lineEndX = pointX - (headWidth - 1) * cos;
-      var lineEndY = pointY - (headWidth - 1) * sin;
-      var lineClass = "arrow-line" + (this.state.lineHover ? " hover" : "") + (this.state.lineDragged ? " dragged" : "");
-      // Extra 'M -1 -1' is a workaround for a chrome bug where the line dissapears if straight, even if outside the mask's clip area:
-      var linePath = "M -1 -1 M " + textX + " " + textY + " L " + lineEndX + " " + lineEndY;
-
-      var showLargerHead = this.state.lineHover || this.state.headHover || this.state.lineDragged || this.state.headDragged;
-      var headGrabber = this.drawHead(pointX, pointY, headGrabberWidth, headGrabberHeight, rotate, headGrabberOffset, cos, sin);
-      var head = showLargerHead ? this.drawHead(pointX, pointY, headHoverWidth, headHoverHeight, rotate, headHoverOffset, cos, sin) : this.drawHead(pointX, pointY, headWidth, headHeight, rotate, 0, 0, 0);
-
-      var editorState = this.props.text.editorState;
-      var hasText = editorState != null && editorState.getCurrentContent() != null && editorState.getCurrentContent().hasText();
-      var textVisible = hasText || this.props.text.editable;
-      var rootClass = "text-annotation" + (!hasText ? " no-text" : "") + (this.props.text.editable ? " editable" : "");
-
-      var lineMaskId = "lineMask" + this.props.text.id;
-      var lineMask = textVisible ? "url(#" + lineMaskId + ")" : "";
-
-      var lineGrabberClass = "arrow-line-grabber" + (this.state.lineDragged ? " dragged" : "");
-      var headGrabberClass = "arrow-head-grabber" + (this.state.headDragged ? " dragged" : "");
-
-      return _react2.default.createElement(
-        "div",
-        { className: rootClass, ref: function ref(e) {
-            return _this2.root = e;
-          } },
-        _react2.default.createElement(
-          "svg",
-          { className: "measurement-svg" },
-          _react2.default.createElement(
-            "defs",
-            null,
-            _react2.default.createElement(
-              "mask",
-              { id: lineMaskId },
-              _react2.default.createElement("rect", { x: "0", y: "0", width: "100%", height: "100%", fill: "white" }),
-              _react2.default.createElement("rect", { fill: "black", ref: function ref(e) {
-                  return _this2.maskRect = e;
-                } })
-            )
-          ),
-          _react2.default.createElement("line", {
-            className: lineGrabberClass,
-            x1: lineEndX,
-            y1: lineEndY,
-            x2: textX,
-            y2: textY,
-            ref: function ref(e) {
-              return _this2.lineGrabber = e;
-            }
-          }),
-          _react2.default.createElement("path", {
-            className: headGrabberClass,
-            d: headGrabber.path,
-            transform: headGrabber.transform,
-            ref: function ref(e) {
-              return _this2.headGrabber = e;
-            }
-          }),
-          _react2.default.createElement("path", {
-            className: "arrow-head",
-            d: head.path,
-            transform: head.transform,
-            ref: function ref(e) {
-              return _this2.head = e;
-            }
-          }),
-          _react2.default.createElement("path", {
-            className: lineClass,
-            d: linePath,
-            ref: function ref(e) {
-              return _this2.line = e;
-            },
-            mask: lineMask
-          })
-        ),
-        _react2.default.createElement(
-          _TextAnchor2.default,
-          {
-            x: textX,
-            y: textY,
-            onDeleteButtonClick: this.onDeleteButtonClick
-          },
-          _react2.default.createElement(
-            "div",
-            { className: "text", ref: function ref(e) {
-                return _this2.text = e;
-              } },
-            _react2.default.createElement(_draftJs.Editor, {
-              editorState: editorState ? editorState : _draftJs.EditorState.createEmpty(),
-              readOnly: !this.props.text.editable,
-              onChange: this.onTextChange,
-              onBlur: this.finishEdit,
-              ref: function ref(e) {
-                return _this2.editor = e;
-              }
-            })
-          )
-        )
-      );
-    }
-  }]);
-
-  return TextAnnotation;
-}(_react.PureComponent);
-
-exports.default = TextAnnotation;
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _MeasurementLayer = __webpack_require__(6);
+var _MeasurementLayer = __webpack_require__(5);
 
 var _MeasurementLayer2 = _interopRequireDefault(_MeasurementLayer);
 
-var _MeasurementLayerBase = __webpack_require__(2);
+var _MeasurementLayerBase = __webpack_require__(1);
 
 var _MeasurementLayerBase2 = _interopRequireDefault(_MeasurementLayerBase);
 
-var _MeasurementUtils = __webpack_require__(7);
+var _MeasurementUtils = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2621,7 +2038,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 15 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(false);
@@ -2629,13 +2046,13 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "/*---------- General Layout ----------*/\n\n.measurement-layer {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  top: 0px;\n  left: 0px;\n}\n\n/*---------- Buttons ----------*/\n\n.measurement-layer .button-bar {\n  position: absolute;\n  display: flex;\n  height: 21px;\n  top: 5px;\n  right: 5px;\n  opacity: 0;\n  transition: opacity 0.2s;\n}\n\n.measurement-layer:hover .button-bar,\n.measurement-layer .button-bar.pressed,\n.measurement-layer .button-bar:focus-within {\n  opacity: 1;\n}\n\n.measurement-layer .button-bar button {\n  background-color: rgba(0, 0, 0, 0.8);\n  border-radius: 0;\n  margin: 0;\n  padding: 3px;\n  border: none;\n  cursor: pointer;\n  outline: none;\n}\n\n.measurement-layer .button-bar button:hover,\n.measurement-layer .button-bar button:focus {\n  background-color: rgba(70, 60, 50, 0.9);\n}\n\n.measurement-layer .button-bar button.pressed {\n  background-color: rgba(130, 120, 110, 0.9);\n}\n\n.measurement-layer .circle-icon {\n  stroke: white;\n  fill: none;\n  stroke-width: 2;\n}\n\n.measurement-layer .ruler-icon,\n.measurement-layer .text-icon {\n  stroke: none;\n  fill: white;\n}\n\n.measurement-number-type {\n  align-items: center;\n  background: rgba(0, 0, 0, 0.7);\n  border-radius: 3px;\n  border: none;\n  box-sizing: border-box;\n  color: white;\n  display: flex;\n  font-size: 12px;\n  font-weight: 500;\n  height: 22px;\n  justify-content: center;\n  line-height: 15px;\n  padding: 3px 3px;\n  width: 50px;\n  border: 1px solid transparent;\n}\n\n.number-display {\n  background: rgba(0, 0, 0, 0.7);\n  border: 1px solid black;\n  border-radius: 12.5px;\n  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);\n  padding: 4px 8px;\n}\n\n.measurement-number-type:active, .measurement-number-type:hover {\n  border: 1px solid #33FFE2;\n  border-top-right-radius: 0px;\n  border-bottom-right-radius: 0px;\n  border-right: none;\n}\n\n.measurement-input, .measurement-input-2 {\n  background: transparent;\n  border: none;\n  color: white;\n  display: flex;\n  justify-content: end;\n  padding-left: 5px;\n  padding-right: 5px;\n  width: 15px;\n}\n\n.measurement-input-2 {\n  display: block;\n  padding-left: 0px;\n  padding-right: 0px;\n  width: 100%;\n}\n\n.measurement-input:focus, .measurement-input-2:focus {\n  outline: none;\n}\n\n.type {\n  background-color: transparent;\n  border: none;\n  border-left: 1px solid #6A6A6A;\n  color: white;\n  padding-left: 5px;\n  width: 10px;\n}\n\n.color-2 {\n  background: rgba(0, 0, 0, 0.7);\n\n}\n\n.delete-hide {\n  display: none;\n}\n\n.delete-button-2 {\n  align-items: center;;\n  background-color: rgba(0, 0, 0, 0.7);\n  border: 1px solid #33FFE2;\n  border-radius: 3px; \n  border-top-left-radius: 0px;\n  border-bottom-left-radius: 0px;\n  border-left: none;\n  display:flex;\n  justify-content: center;\n  height: 20px;\n  outline: none;\n  position: absolute;\n  right: -18px;\n  width: 17px;\n}\n", ""]);
+exports.push([module.i, "/*---------- General Layout ----------*/\n\n.measurement-layer {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  top: 0px;\n  left: 0px;\n}\n\n/*---------- Buttons ----------*/\n\n.measurement-layer .button-bar {\n  position: absolute;\n  display: flex;\n  height: 21px;\n  top: 5px;\n  right: 5px;\n  opacity: 0;\n  transition: opacity 0.2s;\n}\n\n.measurement-layer:hover .button-bar,\n.measurement-layer .button-bar.pressed,\n.measurement-layer .button-bar:focus-within {\n  opacity: 1;\n}\n\n.measurement-layer .button-bar button {\n  background-color: rgba(0, 0, 0, 0.8);\n  border-radius: 0;\n  margin: 0;\n  padding: 3px;\n  border: none;\n  cursor: pointer;\n  outline: none;\n}\n\n.measurement-layer .button-bar button:hover,\n.measurement-layer .button-bar button:focus {\n  background-color: rgba(70, 60, 50, 0.9);\n}\n\n.measurement-layer .button-bar button.pressed {\n  background-color: rgba(130, 120, 110, 0.9);\n}\n\n.measurement-layer .circle-icon {\n  stroke: white;\n  fill: none;\n  stroke-width: 2;\n}\n\n.measurement-layer .ruler-icon,\n.measurement-layer .text-icon {\n  stroke: none;\n  fill: white;\n}\n\n.measurement-number-type {\n  align-items: center;\n  background: rgba(0, 0, 0, 0.7);\n  border-radius: 3px;\n  border: none;\n  box-sizing: border-box;\n  color: white;\n  display: flex;\n  font-size: 12px;\n  font-weight: 500;\n  height: 22px;\n  justify-content: center;\n  line-height: 15px;\n  padding: 3px 3px;\n  width: 50px;\n  border: 1px solid transparent;\n}\n\n.number-display {\n  background: rgba(0, 0, 0, 0.7);\n  border: 1px solid black;\n  border-radius: 12.5px;\n  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);\n  padding: 4px 8px;\n}\n\n.measurement-number-type:active, .measurement-number-type:hover {\n  border: 1px solid #33FFE2;\n  border-top-right-radius: 0px;\n  border-bottom-right-radius: 0px;\n  border-right: none;\n  z-index: 5;\n}\n\n.measurement-input, .measurement-input-2 {\n  background: transparent;\n  border: none;\n  color: white;\n  display: flex;\n  justify-content: end;\n  padding-left: 5px;\n  padding-right: 5px;\n  width: 15px;\n}\n\n.measurement-input-2 {\n  display: block;\n  padding-left: 0px;\n  padding-right: 0px;\n  width: 100%;\n}\n\n.measurement-input:focus, .measurement-input-2:focus {\n  outline: none;\n}\n\n.type {\n  background-color: transparent;\n  border: none;\n  border-left: 1px solid #6A6A6A;\n  color: white;\n  padding-left: 5px;\n  width: 10px;\n}\n\n.color-2 {\n  background: rgba(0, 0, 0, 0.7);\n\n}\n\n.delete-hide {\n  display: none;\n}\n\n.delete-button-2 {\n  align-items: center;;\n  background-color: rgba(0, 0, 0, 0.7);\n  border: 1px solid #33FFE2;\n  border-radius: 3px; \n  border-top-left-radius: 0px;\n  border-bottom-left-radius: 0px;\n  border-left: none;\n  display:flex;\n  justify-content: center;\n  height: 20px;\n  outline: none;\n  position: absolute;\n  right: -18px;\n  width: 17px;\n}\n\n.mesial {\n  color: cyan;\n}\n\n.selected {\n  z-index: 5;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 16 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(false);
@@ -2649,13 +2066,13 @@ exports.push([module.i, "/*---------- General Layout ----------*/\n\n.measuremen
 
 
 /***/ }),
-/* 17 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(15);
+var content = __webpack_require__(11);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -2680,13 +2097,13 @@ if(false) {
 }
 
 /***/ }),
-/* 18 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(16);
+var content = __webpack_require__(12);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -2711,7 +2128,7 @@ if(false) {
 }
 
 /***/ }),
-/* 19 */
+/* 15 */
 /***/ (function(module, exports) {
 
 
@@ -2804,6 +2221,12 @@ module.exports = function (css) {
 	return fixedCss;
 };
 
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+module.exports = require("draft-js");
 
 /***/ })
 /******/ ]);
